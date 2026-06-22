@@ -679,7 +679,7 @@ class TimelineApp:
             return self.timeline_path
         return (
             Path(tempfile.gettempdir())
-            / "setlog-davinci-resolve-integration"
+            / "setlog-fcpxml"
             / "timeline.yaml"
         )
 
