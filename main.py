@@ -70,6 +70,12 @@ class TimelineApp:
 
         self.timeline_path: Path | None = None
         self.output_folder: Path | None = None
+        self.recent_files_menu = ft.PopupMenuButton(
+            icon=ft.Icons.HISTORY,
+            tooltip="最近開いたファイルから選択",
+            items=[],
+            disabled=True,
+        )
         self.timeline: EditableTimeline | None = None
         self.selected_clip_id: str | None = None
         self.preview_player: subprocess.Popen[str] | None = None
@@ -186,6 +192,7 @@ class TimelineApp:
                                 icon=ft.Icons.UPLOAD_FILE,
                                 on_click=self.open_timeline,
                             ),
+                            self.recent_files_menu,
                         ],
                         wrap=True,
                     ),
@@ -348,9 +355,59 @@ class TimelineApp:
         )
 
     def show_start_screen(self) -> None:
+        self.update_recent_files_menu()
         self.page.controls.clear()
         self.page.add(self.start_view)
         self.page.update()
+
+    def get_recent_timelines(self) -> list[str]:
+        try:
+            val = self.page.client_storage.get("recent_timelines")
+            if isinstance(val, list):
+                valid_paths = []
+                for p in val:
+                    if isinstance(p, str) and Path(p).exists():
+                        valid_paths.append(p)
+                return valid_paths
+        except Exception:
+            pass
+        return []
+
+    def add_recent_timeline(self, path: Path) -> None:
+        try:
+            path_str = str(path.resolve())
+            current = self.get_recent_timelines()
+            if path_str in current:
+                current.remove(path_str)
+            current.insert(0, path_str)
+            self.page.client_storage.set("recent_timelines", current[:10])
+        except Exception:
+            pass
+
+    def update_recent_files_menu(self) -> None:
+        recent_paths = self.get_recent_timelines()
+        if not recent_paths:
+            self.recent_files_menu.items = [
+                ft.PopupMenuItem(content="履歴はありません", disabled=True)
+            ]
+            self.recent_files_menu.disabled = True
+        else:
+            items = []
+            for path_str in recent_paths:
+                p = Path(path_str)
+                display_text = f"{p.parent.name}/{p.name}"
+                
+                def make_on_click(path_obj: Path):
+                    return lambda _e: self.load_timeline_file(path_obj)
+                
+                items.append(
+                    ft.PopupMenuItem(
+                        content=display_text,
+                        on_click=make_on_click(p),
+                    )
+                )
+            self.recent_files_menu.items = items
+            self.recent_files_menu.disabled = False
 
     def show_editor_screen(self) -> None:
         self.page.controls.clear()
@@ -433,6 +490,7 @@ class TimelineApp:
             self.project_name_field.value = self.timeline.project_name
             self.media_folder_field.value = str(self.timeline.media_folder)
             self.editor_status_text.value = f"{path} を読み込みました。自動保存はONです。"
+            self.add_recent_timeline(path)
             self.show_editor_screen()
             self.pregenerate_previews()
             self.enable_autosave()
@@ -695,11 +753,18 @@ class TimelineApp:
     def refresh_clip_selection_styles(self) -> None:
         for control in self.clip_list.controls:
             if isinstance(control, ft.Container):
-                control.bgcolor = (
-                    ft.Colors.PRIMARY_CONTAINER
-                    if control.data == self.selected_clip_id
-                    else None
-                )
+                frozen = getattr(control, "_frozen", None)
+                if frozen is not None:
+                    del control._frozen
+                try:
+                    control.bgcolor = (
+                        ft.Colors.PRIMARY_CONTAINER
+                        if control.data == self.selected_clip_id
+                        else None
+                    )
+                finally:
+                    if frozen is not None:
+                        control._frozen = frozen
 
     def _load_preview_in_background(self, clip: EditableClip) -> None:
         preview_base = self.get_cache_base_path()
@@ -1163,6 +1228,7 @@ class TimelineApp:
 
         self.output_folder = output_folder
         self.timeline_path = timeline_path
+        self.add_recent_timeline(timeline_path)
         self.editor_status_text.value = (
             f"{timeline_path} / {fcpxml_path} を保存しました。自動保存はONです。"
         )
