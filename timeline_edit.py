@@ -47,6 +47,7 @@ class EditableClip:
     rotation: int = 0
     normalized_path: Path | None = None
     rotation_checked: bool = True
+    force_normalized: bool = False
 
     @property
     def timeline_duration(self) -> Fraction:
@@ -207,6 +208,7 @@ def timeline_to_dict(timeline: EditableTimeline) -> dict[str, Any]:
                 "normalized_path": str(clip.normalized_path)
                 if clip.normalized_path
                 else None,
+                "force_normalized": clip.force_normalized,
                 "name": clip.name,
                 "enabled": clip.enabled,
                 "note": clip.note,
@@ -245,6 +247,7 @@ def timeline_from_dict(data: dict[str, Any]) -> EditableTimeline:
                 if normalized_path
                 else None,
                 rotation_checked="rotation" in item,
+                force_normalized=bool(item.get("force_normalized", False)),
                 name=item.get("name") or path.stem,
                 enabled=bool(item.get("enabled", True)),
                 note=item.get("note") or "",
@@ -291,7 +294,8 @@ def ensure_normalized_media(
         checked_clip = clip
         if not checked_clip.rotation_checked:
             checked_clip = detect_clip_rotation(checked_clip, ffprobe_path=ffprobe_path)
-        if checked_clip.rotation == 0:
+        should_normalize = checked_clip.rotation != 0 or checked_clip.force_normalized
+        if not should_normalize:
             next_clips.append(
                 EditableClip(
                     **{
@@ -299,6 +303,7 @@ def ensure_normalized_media(
                         "path": checked_clip.source_path,
                         "normalized_path": None,
                         "rotation_checked": True,
+                        "force_normalized": False,
                     }
                 )
             )
@@ -310,16 +315,30 @@ def ensure_normalized_media(
             write_normalized_clip(
                 checked_clip, normalized_path, ffmpeg_path=ffmpeg_path
             )
-        next_clips.append(
-            EditableClip(
+        normalized_clip = EditableClip(
+            **{
+                **checked_clip.__dict__,
+                "path": normalized_path,
+                "normalized_path": normalized_path,
+                "rotation_checked": True,
+            }
+        )
+        try:
+            media = probe_media(normalized_path, ffprobe_path=ffprobe_path)
+            normalized_clip = EditableClip(
                 **{
-                    **checked_clip.__dict__,
-                    "path": normalized_path,
-                    "normalized_path": normalized_path,
-                    "rotation_checked": True,
+                    **normalized_clip.__dict__,
+                    "width": media.width,
+                    "height": media.height,
+                    "frame_rate": media.frame_rate,
+                    "has_audio": media.has_audio,
+                    "audio_channels": media.audio_channels,
+                    "audio_rate": media.audio_rate,
                 }
             )
-        )
+        except (MediaProbeError, OSError, ValueError):
+            pass
+        next_clips.append(normalized_clip)
 
     return EditableTimeline(
         project_name=timeline.project_name,
@@ -374,13 +393,21 @@ def write_normalized_clip(
     command = [
         ffmpeg_path,
         "-y",
-        "-autorotate",
+        "-noautorotate",
+        "-display_rotation",
+        "0",
         "-i",
         str(clip.source_path),
         "-map",
         "0:v:0",
         "-map",
         "0:a?",
+    ]
+    video_filter = rotation_video_filter(clip.rotation)
+    if video_filter:
+        command.extend(["-vf", video_filter])
+    command.extend(
+        [
         "-c:v",
         "libx264",
         "-preset",
@@ -398,7 +425,8 @@ def write_normalized_clip(
         "-movflags",
         "+faststart",
         str(temp_path),
-    ]
+        ]
+    )
     try:
         subprocess.run(command, check=True, capture_output=True, text=True)
         temp_path.replace(normalized_path)
@@ -416,6 +444,19 @@ def write_normalized_clip(
     except OSError:
         temp_path.unlink(missing_ok=True)
         raise
+
+
+def rotation_video_filter(rotation: int) -> str | None:
+    normalized_rotation = rotation % 360
+    if normalized_rotation == 0:
+        return None
+    if normalized_rotation == 90:
+        return "transpose=1"
+    if normalized_rotation == 180:
+        return "hflip,vflip"
+    if normalized_rotation == 270:
+        return "transpose=2"
+    raise TimelineError("rotation は 0, 90, 180, 270 のいずれかで指定してください。")
 
 
 def get_preview_video_source(clip: EditableClip) -> Path:
@@ -580,6 +621,22 @@ def cleanup_intermediate_files(
     return removed
 
 
+def clear_clip_rotation_cache(timeline_path: Path, clip_id: str) -> list[Path]:
+    removed: list[Path] = []
+    candidates = [
+        timeline_path.parent / ".setlog" / "normalized" / f"{clip_id}.mp4",
+        timeline_path.parent / ".setlog" / "previews" / f"{clip_id}.preview.mp4",
+        timeline_path.parent / ".setlog" / "previews" / f"{clip_id}.preview.json",
+        timeline_path.parent / ".setlog" / "previews" / f"{clip_id}.png",
+        timeline_path.parent / ".setlog" / "thumbs" / f"{clip_id}.jpg",
+    ]
+    for path in candidates:
+        if path.exists():
+            path.unlink()
+            removed.append(path)
+    return removed
+
+
 def validate_timeline(timeline: EditableTimeline) -> list[str]:
     errors: list[str] = []
     seen_ids: set[str] = set()
@@ -662,6 +719,26 @@ def set_enabled(
 def set_note(timeline: EditableTimeline, clip_id: str, note: str) -> EditableTimeline:
     clip = require_clip(timeline, clip_id)
     return replace_clip(timeline, EditableClip(**{**clip.__dict__, "note": note}))
+
+
+def set_rotation(
+    timeline: EditableTimeline, clip_id: str, rotation: int
+) -> EditableTimeline:
+    normalized_rotation = rotation % 360
+    if normalized_rotation not in {0, 90, 180, 270}:
+        raise TimelineError("rotation は 0, 90, 180, 270 のいずれかで指定してください。")
+    clip = require_clip(timeline, clip_id)
+    updated = EditableClip(
+        **{
+            **clip.__dict__,
+            "path": clip.source_path,
+            "rotation": normalized_rotation,
+            "normalized_path": None,
+            "rotation_checked": True,
+            "force_normalized": True,
+        }
+    )
+    return replace_clip(timeline, updated)
 
 
 def move_clip(

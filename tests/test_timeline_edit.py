@@ -11,6 +11,7 @@ from xml.etree import ElementTree as ET
 from timeline_edit import (
     EditableClip,
     EditableTimeline,
+    clear_clip_rotation_cache,
     cleanup_intermediate_files,
     ensure_normalized_media,
     export_timeline,
@@ -21,6 +22,7 @@ from timeline_edit import (
     parse_timecode,
     save_timeline,
     set_enabled,
+    set_rotation,
     trim_clip,
     validate_timeline,
 )
@@ -169,7 +171,10 @@ class TimelineEditTests(unittest.TestCase):
             self.assertEqual(clip.path, base / ".setlog" / "normalized" / "c001.mp4")
             self.assertEqual(clip.normalized_path, clip.path)
             self.assertTrue(clip.path.exists())
-            self.assertIn("-autorotate", run.call_args.args[0])
+            command = run.call_args_list[0].args[0]
+            self.assertIn("-noautorotate", command)
+            self.assertEqual(command[command.index("-display_rotation") + 1], "0")
+            self.assertEqual(command[command.index("-vf") + 1], "hflip,vflip")
 
     def test_export_uses_normalized_path(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -211,6 +216,69 @@ class TimelineEditTests(unittest.TestCase):
 
             self.assertIsNotNone(media_rep)
             self.assertEqual(media_rep.attrib["src"], normalized.as_uri())
+
+    def test_set_rotation_resets_proxy_path(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            base = Path(tmpdir)
+            source = base / "1.mp4"
+            normalized = base / ".setlog" / "normalized" / "c001.mp4"
+            source.write_text("", encoding="utf-8")
+            timeline = EditableTimeline(
+                project_name="timeline",
+                media_folder=base,
+                sequence_width=1920,
+                sequence_height=1080,
+                sequence_frame_rate=Fraction(30, 1),
+                clips=[
+                    EditableClip(
+                        "c001",
+                        normalized,
+                        Fraction(10, 1),
+                        Fraction(0, 1),
+                        Fraction(10, 1),
+                        1920,
+                        1080,
+                        Fraction(30, 1),
+                        True,
+                        "1",
+                        original_path=source,
+                        rotation=0,
+                        normalized_path=normalized,
+                    )
+                ],
+            )
+
+            updated = set_rotation(timeline, "c001", 90)
+
+            clip = updated.clips[0]
+            self.assertEqual(clip.path, source)
+            self.assertEqual(clip.rotation, 90)
+            self.assertIsNone(clip.normalized_path)
+            self.assertTrue(clip.rotation_checked)
+            self.assertTrue(clip.force_normalized)
+
+    def test_clear_clip_rotation_cache_removes_clip_outputs(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            base = Path(tmpdir)
+            timeline_path = base / "timeline.yaml"
+            targets = [
+                base / ".setlog" / "normalized" / "c021.mp4",
+                base / ".setlog" / "previews" / "c021.preview.mp4",
+                base / ".setlog" / "previews" / "c021.preview.json",
+                base / ".setlog" / "previews" / "c021.png",
+                base / ".setlog" / "thumbs" / "c021.jpg",
+            ]
+            untouched = base / ".setlog" / "previews" / "c022.preview.mp4"
+            for path in [*targets, untouched]:
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text("cache", encoding="utf-8")
+
+            removed = clear_clip_rotation_cache(timeline_path, "c021")
+
+            self.assertEqual(removed, targets)
+            self.assertTrue(untouched.exists())
+            for path in targets:
+                self.assertFalse(path.exists())
 
     def test_timeline_preview_clip_uses_existing_normalized_media(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:

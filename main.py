@@ -25,6 +25,7 @@ from timeline_edit import (
     EditableClip,
     EditableTimeline,
     TimelineError,
+    clear_clip_rotation_cache,
     cleanup_intermediate_files,
     ensure_normalized_media,
     export_timeline,
@@ -38,6 +39,7 @@ from timeline_edit import (
     scan_timeline,
     set_enabled,
     set_note,
+    set_rotation,
     trim_clip,
 )
 
@@ -266,9 +268,23 @@ class TimelineApp:
             side="left", padx=(12, 0)
         )
 
-        ttk.Label(detail, text="メモ").grid(row=4, column=0, sticky="w")
+        rotate_actions = ttk.Frame(detail)
+        rotate_actions.grid(row=4, column=0, sticky="ew", pady=(0, 8))
+        ttk.Label(rotate_actions, text="回転補正").pack(side="left", padx=(0, 8))
+        ttk.Button(
+            rotate_actions,
+            text="-90°",
+            command=lambda: self.rotate_selected_clip_by_delta(-90),
+        ).pack(side="left", padx=(0, 4))
+        ttk.Button(
+            rotate_actions,
+            text="+90°",
+            command=lambda: self.rotate_selected_clip_by_delta(90),
+        ).pack(side="left", padx=(0, 4))
+
+        ttk.Label(detail, text="メモ").grid(row=5, column=0, sticky="w")
         self.note_text = Text(detail, height=5, wrap="word")
-        self.note_text.grid(row=5, column=0, sticky="ew")
+        self.note_text.grid(row=6, column=0, sticky="ew")
 
     def show_start_screen(self) -> None:
         self.editor_frame.grid_remove()
@@ -506,7 +522,7 @@ class TimelineApp:
         self.note_text.delete("1.0", "end")
         self.note_text.insert("1.0", clip.note)
         self.clip_detail.set(
-            f"{clip.id}  {clip.name}  in {format_time(clip.trim_in)} / out {format_time(clip.trim_out)} / dur {format_time(clip.timeline_duration)}"
+            f"{clip.id}  {clip.name}  in {format_time(clip.trim_in)} / out {format_time(clip.trim_out)} / dur {format_time(clip.timeline_duration)} / rotation {clip.rotation}"
         )
         self.draw_timeline_visual()
         self.preview_label.configure(text="プレビュー生成中...", image="")
@@ -541,6 +557,44 @@ class TimelineApp:
         if not self.apply_selected_edit(show_dialogs=True):
             return
         self.save_project()
+
+    def rotate_selected_clip(self, rotation: int) -> None:
+        if not self.timeline or not self.selected_clip_id:
+            messagebox.showerror("入力エラー", "クリップを選択してください。")
+            return
+        if not self.apply_selected_edit(show_dialogs=True):
+            return
+
+        clip_id = self.selected_clip_id
+        try:
+            self.stop_timeline_preview(update_status=False)
+            self.timeline = set_rotation(self.timeline, clip_id, rotation)
+            clear_clip_rotation_cache(self.get_cache_base_path(), clip_id)
+            self.editor_status.set(f"{clip_id} の回転補正を {rotation} に更新中...")
+            self.root.update_idletasks()
+            self.timeline = ensure_normalized_media(
+                self.timeline, self.get_cache_base_path()
+            )
+            if self.timeline_path:
+                if self.save_project():
+                    self.populate_clip_tree(select_id=clip_id)
+                    self.on_clip_selected()
+            else:
+                self.populate_clip_tree(select_id=clip_id)
+                self.on_clip_selected()
+                self.editor_status.set(
+                    f"{clip_id} の回転補正を {rotation} に更新しました。未保存です。"
+                )
+        except (OSError, TimelineError, ValueError) as exc:
+            messagebox.showerror("回転補正失敗", str(exc))
+            return
+
+    def rotate_selected_clip_by_delta(self, delta: int) -> None:
+        clip = self.find_selected_clip()
+        if not clip:
+            messagebox.showerror("入力エラー", "クリップを選択してください。")
+            return
+        self.rotate_selected_clip((clip.rotation + delta) % 360)
 
     def play_timeline_preview(self) -> None:
         if not self.timeline:
@@ -794,8 +848,8 @@ class TimelineApp:
         self.save_project()
         return "break"
 
-    def save_project(self) -> None:
-        self._save_project(
+    def save_project(self) -> bool:
+        return self._save_project(
             show_dialogs=True, choose_directory=self.output_folder is None
         )
 

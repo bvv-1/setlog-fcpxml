@@ -8,6 +8,7 @@ from fcpxml_generator import MediaProbeError
 from main import main as gui_main
 from timeline_edit import (
     TimelineError,
+    clear_clip_rotation_cache,
     cleanup_intermediate_files,
     ensure_normalized_media,
     export_timeline,
@@ -19,6 +20,7 @@ from timeline_edit import (
     scan_timeline,
     set_enabled,
     set_note,
+    set_rotation,
     trim_clip,
     validate_timeline,
 )
@@ -66,6 +68,16 @@ def build_parser() -> argparse.ArgumentParser:
     note.add_argument("clip_id")
     note.add_argument("text")
 
+    rotate = subparsers.add_parser("rotate", help="クリップの回転補正値を手動変更")
+    rotate.add_argument("timeline", type=Path)
+    rotate.add_argument("clip_id")
+    rotate.add_argument(
+        "rotation",
+        type=int,
+        choices=(0, 90, 180, 270),
+        help="時計回りの回転補正値",
+    )
+
     thumbs = subparsers.add_parser("thumbs", help="必要時にサムネイルを生成")
     thumbs.add_argument("timeline", type=Path)
 
@@ -85,6 +97,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
 
     subparsers.add_parser("gui", help="素材フォルダから編集GUIを起動")
+    subparsers.add_parser("dev", help="ファイル変更時にGUIを自動再起動")
     return parser
 
 
@@ -141,6 +154,17 @@ def main(argv: list[str] | None = None) -> int:
             save_timeline(timeline, args.timeline)
             print(f"{args.clip_id} のnoteを更新しました。")
             return 0
+        if args.command == "rotate":
+            timeline = set_rotation(
+                load_timeline(args.timeline), args.clip_id, args.rotation
+            )
+            removed = clear_clip_rotation_cache(args.timeline, args.clip_id)
+            timeline = ensure_normalized_media(timeline, args.timeline)
+            save_timeline(timeline, args.timeline)
+            print(f"{args.clip_id} のrotationを {args.rotation} に更新しました。")
+            if removed:
+                print(f"キャッシュを削除しました: {len(removed)} files")
+            return 0
         if args.command == "thumbs":
             timeline = ensure_normalized_media(
                 load_timeline(args.timeline), args.timeline
@@ -182,6 +206,10 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "gui":
             gui_main()
             return 0
+        if args.command == "dev":
+            from hotreload import main as hotreload_main
+
+            return hotreload_main()
     except (TimelineError, MediaProbeError, OSError, ValueError) as exc:
         print(str(exc), file=sys.stderr)
         return 1
