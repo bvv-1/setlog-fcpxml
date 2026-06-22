@@ -1,0 +1,580 @@
+<?xml version="1.0" encoding="utf-8"?>
+<fcpxml version="1.10">
+  <resources>
+    <format id="r1" name="FFVideoFormat1920x1080" frameDuration="15599/465000s" width="1920" height="1080"/>
+    <asset id="r2" name="PXL_20260228_021155450.TS" uid="clip-1" start="0s" duration="1039933/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_021155450.TS.mp4"/>
+    </asset>
+    <asset id="r3" name="PXL_20260228_021402865.TS" uid="clip-2" start="0s" duration="427061/250000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_021402865.TS.mp4"/>
+    </asset>
+    <asset id="r4" name="PXL_20260228_021742455.TS" uid="clip-3" start="0s" duration="1339111/500000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_021742455.TS.mp4"/>
+    </asset>
+    <asset id="r5" name="PXL_20260228_023117210.TS" uid="clip-4" start="0s" duration="1607667/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_023117210.TS.mp4"/>
+    </asset>
+    <asset id="r6" name="PXL_20260228_033701204.TS" uid="clip-5" start="0s" duration="1607489/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_033701204.TS.mp4"/>
+    </asset>
+    <asset id="r7" name="PXL_20260228_034550324.TS" uid="clip-6" start="0s" duration="4553011/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_034550324.TS.mp4"/>
+    </asset>
+    <asset id="r8" name="PXL_20260228_041526905.TS" uid="clip-7" start="0s" duration="2711833/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_041526905.TS.mp4"/>
+    </asset>
+    <asset id="r9" name="PXL_20260228_042100482.TS" uid="clip-8" start="0s" duration="1473033/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_042100482.TS.mp4"/>
+    </asset>
+    <asset id="r10" name="PXL_20260228_042627374.TS" uid="clip-9" start="0s" duration="1456289/500000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_042627374.TS.mp4"/>
+    </asset>
+    <asset id="r11" name="PXL_20260228_042840112.TS" uid="clip-10" start="0s" duration="552439/500000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_042840112.TS.mp4"/>
+    </asset>
+    <asset id="r12" name="PXL_20260228_043032129.TS" uid="clip-11" start="0s" duration="1673911/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_043032129.TS.mp4"/>
+    </asset>
+    <asset id="r13" name="PXL_20260228_043232937.TS" uid="clip-12" start="0s" duration="1339111/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_043232937.TS.mp4"/>
+    </asset>
+    <asset id="r14" name="PXL_20260228_043248341.TS" uid="clip-13" start="0s" duration="1908261/500000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_043248341.TS.mp4"/>
+    </asset>
+    <asset id="r15" name="PXL_20260228_043302559.TS" uid="clip-14" start="0s" duration="81609/62500s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_043302559.TS.mp4"/>
+    </asset>
+    <asset id="r16" name="PXL_20260228_043346873.TS" uid="clip-15" start="0s" duration="585861/500000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_043346873.TS.mp4"/>
+    </asset>
+    <asset id="r17" name="PXL_20260228_043359760.TS" uid="clip-16" start="0s" duration="3113433/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_043359760.TS.mp4"/>
+    </asset>
+    <asset id="r18" name="PXL_20260228_043603170.TS" uid="clip-17" start="0s" duration="1155011/500000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_043603170.TS.mp4"/>
+    </asset>
+    <asset id="r19" name="PXL_20260228_043621865.TS" uid="clip-18" start="0s" duration="8706767/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_043621865.TS.mp4"/>
+    </asset>
+    <asset id="r20" name="PXL_20260228_044106693.TS" uid="clip-19" start="0s" duration="3214489/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_044106693.TS.mp4"/>
+    </asset>
+    <asset id="r21" name="PXL_20260228_044404006.TS" uid="clip-20" start="0s" duration="3163289/500000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_044404006.TS.mp4"/>
+    </asset>
+    <asset id="r22" name="PXL_20260228_044416591.TS" uid="clip-21" start="0s" duration="314193/125000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_044416591.TS.mp4"/>
+    </asset>
+    <asset id="r23" name="PXL_20260228_044420502.TS" uid="clip-22" start="0s" duration="1556789/250000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_044420502.TS.mp4"/>
+    </asset>
+    <asset id="r24" name="PXL_20260228_044717742.TS" uid="clip-23" start="0s" duration="4420833/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_044717742.TS.mp4"/>
+    </asset>
+    <asset id="r25" name="PXL_20260228_045546720.TS" uid="clip-24" start="0s" duration="3215811/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_045546720.TS.mp4"/>
+    </asset>
+    <asset id="r26" name="PXL_20260228_045557442.TS" uid="clip-25" start="0s" duration="2611233/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_045557442.TS.mp4"/>
+    </asset>
+    <asset id="r27" name="PXL_20260228_045610050.TS" uid="clip-26" start="0s" duration="820289/500000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_045610050.TS.mp4"/>
+    </asset>
+    <asset id="r28" name="PXL_20260228_050707949.TS" uid="clip-27" start="0s" duration="1188839/500000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_050707949.TS.mp4"/>
+    </asset>
+    <asset id="r29" name="PXL_20260228_050925056.TS" uid="clip-28" start="0s" duration="1707411/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_050925056.TS.mp4"/>
+    </asset>
+    <asset id="r30" name="PXL_20260228_051451384.TS" uid="clip-29" start="0s" duration="343161/250000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_051451384.TS.mp4"/>
+    </asset>
+    <asset id="r31" name="PXL_20260228_051846795.TS" uid="clip-30" start="0s" duration="36157/10000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_051846795.TS.mp4"/>
+    </asset>
+    <asset id="r32" name="PXL_20260228_052342996.TS" uid="clip-31" start="0s" duration="274943/125000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_052342996.TS.mp4"/>
+    </asset>
+    <asset id="r33" name="PXL_20260228_052547521.TS" uid="clip-32" start="0s" duration="5691233/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_052547521.TS.mp4"/>
+    </asset>
+    <asset id="r34" name="PXL_20260228_052636142.TS" uid="clip-33" start="0s" duration="4680733/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_052636142.TS.mp4"/>
+    </asset>
+    <asset id="r35" name="PXL_20260228_052746449.TS" uid="clip-34" start="0s" duration="2109433/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_052746449.TS.mp4"/>
+    </asset>
+    <asset id="r36" name="PXL_20260228_053202573.TS" uid="clip-35" start="0s" duration="334789/250000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_053202573.TS.mp4"/>
+    </asset>
+    <asset id="r37" name="PXL_20260228_060057315.TS" uid="clip-36" start="0s" duration="3464739/500000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_060057315.TS.mp4"/>
+    </asset>
+    <asset id="r38" name="PXL_20260228_060500732.TS" uid="clip-37" start="0s" duration="5207811/500000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_060500732.TS.mp4"/>
+    </asset>
+    <asset id="r39" name="PXL_20260228_062900274.TS" uid="clip-38" start="0s" duration="456143/125000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_062900274.TS.mp4"/>
+    </asset>
+    <asset id="r40" name="PXL_20260228_063043860.TS" uid="clip-39" start="0s" duration="468589/250000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_063043860.TS.mp4"/>
+    </asset>
+    <asset id="r41" name="PXL_20260228_063243219.TS" uid="clip-40" start="0s" duration="619361/250000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_063243219.TS.mp4"/>
+    </asset>
+    <asset id="r42" name="PXL_20260228_063248952.TS" uid="clip-41" start="0s" duration="2845767/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_063248952.TS.mp4"/>
+    </asset>
+    <asset id="r43" name="PXL_20260228_063254430.TS" uid="clip-42" start="0s" duration="1104889/500000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_063254430.TS.mp4"/>
+    </asset>
+    <asset id="r44" name="PXL_20260228_063305774.TS" uid="clip-43" start="0s" duration="2812267/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_063305774.TS.mp4"/>
+    </asset>
+    <asset id="r45" name="PXL_20260228_063341878.TS" uid="clip-44" start="0s" duration="1958511/500000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_063341878.TS.mp4"/>
+    </asset>
+    <asset id="r46" name="PXL_20260228_063348842.TS" uid="clip-45" start="0s" duration="577539/250000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_063348842.TS.mp4"/>
+    </asset>
+    <asset id="r47" name="PXL_20260228_063354320.TS" uid="clip-46" start="0s" duration="75327/10000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_063354320.TS.mp4"/>
+    </asset>
+    <asset id="r48" name="PXL_20260228_063414437.TS" uid="clip-47" start="0s" duration="24773/10000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_063414437.TS.mp4"/>
+    </asset>
+    <asset id="r49" name="PXL_20260228_063553601.TS" uid="clip-48" start="0s" duration="213441/62500s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_063553601.TS.mp4"/>
+    </asset>
+    <asset id="r50" name="PXL_20260228_063710075.TS" uid="clip-49" start="0s" duration="11551/5000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_063710075.TS.mp4"/>
+    </asset>
+    <asset id="r51" name="PXL_20260228_063722372.TS" uid="clip-50" start="0s" duration="1356089/500000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_063722372.TS.mp4"/>
+    </asset>
+    <asset id="r52" name="PXL_20260228_063730961.TS" uid="clip-51" start="0s" duration="586211/500000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_063730961.TS.mp4"/>
+    </asset>
+    <asset id="r53" name="PXL_20260228_080607192.TS" uid="clip-52" start="0s" duration="3950389/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_080607192.TS.mp4"/>
+    </asset>
+    <asset id="r54" name="PXL_20260228_080626099.TS" uid="clip-53" start="0s" duration="2812133/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_080626099.TS.mp4"/>
+    </asset>
+    <asset id="r55" name="PXL_20260228_081835683.TS" uid="clip-54" start="0s" duration="937389/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_081835683.TS.mp4"/>
+    </asset>
+    <asset id="r56" name="PXL_20260228_084359709.TS" uid="clip-55" start="0s" duration="3816467/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_084359709.TS.mp4"/>
+    </asset>
+    <asset id="r57" name="PXL_20260228_085538807.TS" uid="clip-56" start="0s" duration="1305211/500000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_085538807.TS.mp4"/>
+    </asset>
+    <asset id="r58" name="PXL_20260228_085737088.TS" uid="clip-57" start="0s" duration="2880711/500000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_085737088.TS.mp4"/>
+    </asset>
+    <asset id="r59" name="PXL_20260228_095425743.TS" uid="clip-58" start="0s" duration="8058189/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_095425743.TS.mp4"/>
+    </asset>
+    <asset id="r60" name="PXL_20260228_095600451.TS" uid="clip-59" start="0s" duration="1188461/250000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_095600451.TS.mp4"/>
+    </asset>
+    <asset id="r61" name="PXL_20260228_095812941.TS" uid="clip-60" start="0s" duration="3527067/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_095812941.TS.mp4"/>
+    </asset>
+    <asset id="r62" name="PXL_20260228_100406509.TS" uid="clip-61" start="0s" duration="1707367/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_100406509.TS.mp4"/>
+    </asset>
+    <asset id="r63" name="PXL_20260228_100437471.TS" uid="clip-62" start="0s" duration="497593/125000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_100437471.TS.mp4"/>
+    </asset>
+    <asset id="r64" name="PXL_20260228_102312397.TS" uid="clip-63" start="0s" duration="2663389/500000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_102312397.TS.mp4"/>
+    </asset>
+    <asset id="r65" name="PXL_20260228_102424858.TS" uid="clip-64" start="0s" duration="10797/2500s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_102424858.TS.mp4"/>
+    </asset>
+    <asset id="r66" name="PXL_20260228_102431111.TS" uid="clip-65" start="0s" duration="1305633/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_102431111.TS.mp4"/>
+    </asset>
+    <asset id="r67" name="PXL_20260228_102526211.TS" uid="clip-66" start="0s" duration="1831289/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_102526211.TS.mp4"/>
+    </asset>
+    <asset id="r68" name="PXL_20260228_104245998.TS" uid="clip-67" start="0s" duration="1585139/500000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_104245998.TS.mp4"/>
+    </asset>
+    <asset id="r69" name="PXL_20260228_110142350.TS" uid="clip-68" start="0s" duration="1071289/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_110142350.TS.mp4"/>
+    </asset>
+    <asset id="r70" name="PXL_20260228_110258424.TS" uid="clip-69" start="0s" duration="1113139/250000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_110258424.TS.mp4"/>
+    </asset>
+    <asset id="r71" name="PXL_20260228_110346673.TS" uid="clip-70" start="0s" duration="27419511/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_110346673.TS.mp4"/>
+    </asset>
+    <asset id="r72" name="PXL_20260228_110953500.TS" uid="clip-71" start="0s" duration="11717267/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_110953500.TS.mp4"/>
+    </asset>
+    <asset id="r73" name="PXL_20260228_111117350.TS" uid="clip-72" start="0s" duration="3884011/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_111117350.TS.mp4"/>
+    </asset>
+    <asset id="r74" name="PXL_20260228_111743284.TS" uid="clip-73" start="0s" duration="428759/62500s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_111743284.TS.mp4"/>
+    </asset>
+    <asset id="r75" name="PXL_20260228_113103625.TS" uid="clip-74" start="0s" duration="970657/125000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_113103625.TS.mp4"/>
+    </asset>
+    <asset id="r76" name="PXL_20260228_113800678.TS" uid="clip-75" start="0s" duration="3592561/500000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_113800678.TS.mp4"/>
+    </asset>
+    <asset id="r77" name="PXL_20260228_114155065.TS" uid="clip-76" start="0s" duration="36491/10000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_114155065.TS.mp4"/>
+    </asset>
+    <asset id="r78" name="PXL_20260228_115030480.TS" uid="clip-77" start="0s" duration="5058989/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_115030480.TS.mp4"/>
+    </asset>
+    <asset id="r79" name="PXL_20260228_115039786.TS" uid="clip-78" start="0s" duration="1930089/250000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_115039786.TS.mp4"/>
+    </asset>
+    <asset id="r80" name="PXL_20260228_115210922.TS" uid="clip-79" start="0s" duration="3074961/500000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_115210922.TS.mp4"/>
+    </asset>
+    <asset id="r81" name="PXL_20260228_115733755.TS" uid="clip-80" start="0s" duration="1221939/500000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_115733755.TS.mp4"/>
+    </asset>
+    <asset id="r82" name="PXL_20260228_115811537.TS" uid="clip-81" start="0s" duration="2812133/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_115811537.TS.mp4"/>
+    </asset>
+    <asset id="r83" name="PXL_20260228_124020735.TS" uid="clip-82" start="0s" duration="736511/500000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_124020735.TS.mp4"/>
+    </asset>
+    <asset id="r84" name="PXL_20260228_125638116.TS" uid="clip-83" start="0s" duration="1874761/500000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_125638116.TS.mp4"/>
+    </asset>
+    <asset id="r85" name="PXL_20260228_130238798.TS" uid="clip-84" start="0s" duration="334789/250000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_130238798.TS.mp4"/>
+    </asset>
+    <asset id="r86" name="PXL_20260228_131619274.TS" uid="clip-85" start="0s" duration="1565089/250000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_131619274.TS.mp4"/>
+    </asset>
+    <asset id="r87" name="PXL_20260228_134555037.TS" uid="clip-86" start="0s" duration="180059/62500s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_134555037.TS.mp4"/>
+    </asset>
+    <asset id="r88" name="PXL_20260228_140101820.TS" uid="clip-87" start="0s" duration="3515167/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_140101820.TS.mp4"/>
+    </asset>
+    <asset id="r89" name="PXL_20260228_234304182.TS" uid="clip-88" start="0s" duration="2443889/500000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260228_234304182.TS.mp4"/>
+    </asset>
+    <asset id="r90" name="PXL_20260301_001351284.TS" uid="clip-89" start="0s" duration="1640439/500000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_001351284.TS.mp4"/>
+    </asset>
+    <asset id="r91" name="PXL_20260301_002543031.TS" uid="clip-90" start="0s" duration="15391/5000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_002543031.TS.mp4"/>
+    </asset>
+    <asset id="r92" name="PXL_20260301_003845607.TS" uid="clip-91" start="0s" duration="410139/250000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_003845607.TS.mp4"/>
+    </asset>
+    <asset id="r93" name="PXL_20260301_003855885.TS" uid="clip-92" start="0s" duration="1389311/500000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_003855885.TS.mp4"/>
+    </asset>
+    <asset id="r94" name="PXL_20260301_004011052.TS" uid="clip-93" start="0s" duration="5155167/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_004011052.TS.mp4"/>
+    </asset>
+    <asset id="r95" name="PXL_20260301_004204794.TS" uid="clip-94" start="0s" duration="50199/10000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_004204794.TS.mp4"/>
+    </asset>
+    <asset id="r96" name="PXL_20260301_004516126.TS" uid="clip-95" start="0s" duration="9976411/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_004516126.TS.mp4"/>
+    </asset>
+    <asset id="r97" name="PXL_20260301_011700772.TS" uid="clip-96" start="0s" duration="2544311/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_011700772.TS.mp4"/>
+    </asset>
+    <asset id="r98" name="PXL_20260301_014227775.TS" uid="clip-97" start="0s" duration="2577811/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_014227775.TS.mp4"/>
+    </asset>
+    <asset id="r99" name="PXL_20260301_014930377.TS" uid="clip-98" start="0s" duration="5858967/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_014930377.TS.mp4"/>
+    </asset>
+    <asset id="r100" name="PXL_20260301_020017694.TS" uid="clip-99" start="0s" duration="6134367/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_020017694.TS.mp4"/>
+    </asset>
+    <asset id="r101" name="PXL_20260301_020750438.TS" uid="clip-100" start="0s" duration="6561667/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_020750438.TS.mp4"/>
+    </asset>
+    <asset id="r102" name="PXL_20260301_022405519.TS" uid="clip-101" start="0s" duration="3682561/500000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_022405519.TS.mp4"/>
+    </asset>
+    <asset id="r103" name="PXL_20260301_024723435.TS" uid="clip-102" start="0s" duration="28339/5000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_024723435.TS.mp4"/>
+    </asset>
+    <asset id="r104" name="PXL_20260301_025821335.TS" uid="clip-103" start="0s" duration="4240189/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_025821335.TS.mp4"/>
+    </asset>
+    <asset id="r105" name="PXL_20260301_025833991.TS" uid="clip-104" start="0s" duration="6176289/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_025833991.TS.mp4"/>
+    </asset>
+    <asset id="r106" name="PXL_20260301_030603510.TS" uid="clip-105" start="0s" duration="33143/10000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_030603510.TS.mp4"/>
+    </asset>
+    <asset id="r107" name="PXL_20260301_030919961.TS" uid="clip-106" start="0s" duration="5495267/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_030919961.TS.mp4"/>
+    </asset>
+    <asset id="r108" name="PXL_20260301_033225258.TS" uid="clip-107" start="0s" duration="3314311/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_033225258.TS.mp4"/>
+    </asset>
+    <asset id="r109" name="PXL_20260301_033413297.TS" uid="clip-108" start="0s" duration="4117767/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_033413297.TS.mp4"/>
+    </asset>
+    <asset id="r110" name="PXL_20260301_041840012.TS" uid="clip-109" start="0s" duration="6762533/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_041840012.TS.mp4"/>
+    </asset>
+    <asset id="r111" name="PXL_20260301_044422942.TS" uid="clip-110" start="0s" duration="123533/31250s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_044422942.TS.mp4"/>
+    </asset>
+    <asset id="r112" name="PXL_20260301_050223575.TS" uid="clip-111" start="0s" duration="4619967/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_050223575.TS.mp4"/>
+    </asset>
+    <asset id="r113" name="PXL_20260301_051356909.TS" uid="clip-112" start="0s" duration="1288961/500000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_051356909.TS.mp4"/>
+    </asset>
+    <asset id="r114" name="PXL_20260301_052022664.TS" uid="clip-113" start="0s" duration="1690939/500000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_052022664.TS.mp4"/>
+    </asset>
+    <asset id="r115" name="PXL_20260301_052034745.TS" uid="clip-114" start="0s" duration="3280833/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_052034745.TS.mp4"/>
+    </asset>
+    <asset id="r116" name="PXL_20260301_062022811.TS" uid="clip-115" start="0s" duration="4117511/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_062022811.TS.mp4"/>
+    </asset>
+    <asset id="r117" name="PXL_20260301_062049978.TS" uid="clip-116" start="0s" duration="9336967/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_062049978.TS.mp4"/>
+    </asset>
+    <asset id="r118" name="PXL_20260301_062138241.TS" uid="clip-117" start="0s" duration="1071689/250000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_062138241.TS.mp4"/>
+    </asset>
+    <asset id="r119" name="PXL_20260301_062419731.TS" uid="clip-118" start="0s" duration="121459/10000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_062419731.TS.mp4"/>
+    </asset>
+    <asset id="r120" name="PXL_20260301_062434727.TS" uid="clip-119" start="0s" duration="736511/250000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_062434727.TS.mp4"/>
+    </asset>
+    <asset id="r121" name="PXL_20260301_064051093.TS" uid="clip-120" start="0s" duration="3548389/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_064051093.TS.mp4"/>
+    </asset>
+    <asset id="r122" name="PXL_20260301_064156308.TS" uid="clip-121" start="0s" duration="2361189/250000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_064156308.TS.mp4"/>
+    </asset>
+    <asset id="r123" name="PXL_20260301_065501472.TS" uid="clip-122" start="0s" duration="1473289/500000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_065501472.TS.mp4"/>
+    </asset>
+    <asset id="r124" name="PXL_20260301_065648457.TS" uid="clip-123" start="0s" duration="4118611/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_065648457.TS.mp4"/>
+    </asset>
+    <asset id="r125" name="PXL_20260301_065946476.TS" uid="clip-124" start="0s" duration="4436533/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_065946476.TS.mp4"/>
+    </asset>
+    <asset id="r126" name="PXL_20260301_070108757.TS" uid="clip-125" start="0s" duration="1105111/500000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_070108757.TS.mp4"/>
+    </asset>
+    <asset id="r127" name="PXL_20260301_071026629.TS" uid="clip-126" start="0s" duration="1037811/500000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_071026629.TS.mp4"/>
+    </asset>
+    <asset id="r128" name="PXL_20260301_072143916.TS" uid="clip-127" start="0s" duration="5323111/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_072143916.TS.mp4"/>
+    </asset>
+    <asset id="r129" name="PXL_20260301_072311213.TS" uid="clip-128" start="0s" duration="887161/500000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_072311213.TS.mp4"/>
+    </asset>
+    <asset id="r130" name="PXL_20260301_072319634.TS" uid="clip-129" start="0s" duration="368261/250000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_072319634.TS.mp4"/>
+    </asset>
+    <asset id="r131" name="PXL_20260301_072944801.TS" uid="clip-130" start="0s" duration="6160767/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_072944801.TS.mp4"/>
+    </asset>
+    <asset id="r132" name="PXL_20260301_073003479.TS" uid="clip-131" start="0s" duration="971261/500000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_073003479.TS.mp4"/>
+    </asset>
+    <asset id="r133" name="PXL_20260301_073234463.TS" uid="clip-132" start="0s" duration="3264339/500000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_073234463.TS.mp4"/>
+    </asset>
+    <asset id="r134" name="PXL_20260301_073749489.TS" uid="clip-133" start="0s" duration="1942167/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_073749489.TS.mp4"/>
+    </asset>
+    <asset id="r135" name="PXL_20260301_073756825.TS" uid="clip-134" start="0s" duration="3013/2500s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_073756825.TS.mp4"/>
+    </asset>
+    <asset id="r136" name="PXL_20260301_073945730.TS" uid="clip-135" start="0s" duration="770239/500000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_073945730.TS.mp4"/>
+    </asset>
+    <asset id="r137" name="PXL_20260301_082133640.TS" uid="clip-136" start="0s" duration="12391/10000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_082133640.TS.mp4"/>
+    </asset>
+    <asset id="r138" name="PXL_20260301_082907419.TS" uid="clip-137" start="0s" duration="1104789/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_082907419.TS.mp4"/>
+    </asset>
+    <asset id="r139" name="PXL_20260301_083107323.TS" uid="clip-138" start="0s" duration="4552989/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_083107323.TS.mp4"/>
+    </asset>
+    <asset id="r140" name="PXL_20260301_090312835.TS" uid="clip-139" start="0s" duration="2443889/500000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_090312835.TS.mp4"/>
+    </asset>
+    <asset id="r141" name="PXL_20260301_090831933.TS" uid="clip-140" start="0s" duration="11024211/1000000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_090831933.TS.mp4"/>
+    </asset>
+    <asset id="r142" name="PXL_20260301_094942927.TS" uid="clip-141" start="0s" duration="79743/125000s" hasVideo="1" format="r1" hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">
+      <media-rep kind="original-media" src="file:///Users/yamada_kentaro/Movies/20260228_0301_fukui/PXL_20260301_094942927.TS.mp4"/>
+    </asset>
+  </resources>
+  <library>
+    <event name="timeline">
+      <project name="timeline">
+        <sequence format="r1" duration="285573767/500000s" tcStart="0s" tcFormat="NDF">
+          <spine>
+            <asset-clip name="PXL_20260228_021155450.TS" ref="r2" offset="0s" start="0s" duration="1039933/1000000s"/>
+            <asset-clip name="PXL_20260228_021402865.TS" ref="r3" offset="1039933/1000000s" start="0s" duration="427061/250000s"/>
+            <asset-clip name="PXL_20260228_021742455.TS" ref="r4" offset="2748177/1000000s" start="0s" duration="1339111/500000s"/>
+            <asset-clip name="PXL_20260228_023117210.TS" ref="r5" offset="5426399/1000000s" start="0s" duration="1607667/1000000s"/>
+            <asset-clip name="PXL_20260228_033701204.TS" ref="r6" offset="3517033/500000s" start="0s" duration="1607489/1000000s"/>
+            <asset-clip name="PXL_20260228_034550324.TS" ref="r7" offset="1728311/200000s" start="0s" duration="4553011/1000000s"/>
+            <asset-clip name="PXL_20260228_041526905.TS" ref="r8" offset="6597283/500000s" start="0s" duration="2711833/1000000s"/>
+            <asset-clip name="PXL_20260228_042100482.TS" ref="r9" offset="15906399/1000000s" start="0s" duration="1473033/1000000s"/>
+            <asset-clip name="PXL_20260228_042627374.TS" ref="r10" offset="2172429/125000s" start="0s" duration="1456289/500000s"/>
+            <asset-clip name="PXL_20260228_042840112.TS" ref="r11" offset="2029201/100000s" start="0s" duration="552439/500000s"/>
+            <asset-clip name="PXL_20260228_043032129.TS" ref="r12" offset="2674611/125000s" start="0s" duration="1673911/1000000s"/>
+            <asset-clip name="PXL_20260228_043232937.TS" ref="r13" offset="23070799/1000000s" start="0s" duration="1339111/1000000s"/>
+            <asset-clip name="PXL_20260228_043248341.TS" ref="r14" offset="2440991/100000s" start="0s" duration="1908261/500000s"/>
+            <asset-clip name="PXL_20260228_043302559.TS" ref="r15" offset="441038/15625s" start="0s" duration="81609/62500s"/>
+            <asset-clip name="PXL_20260228_043346873.TS" ref="r16" offset="1845761/62500s" start="0s" duration="585861/500000s"/>
+            <asset-clip name="PXL_20260228_043359760.TS" ref="r17" offset="15351949/500000s" start="0s" duration="3113433/1000000s"/>
+            <asset-clip name="PXL_20260228_043603170.TS" ref="r18" offset="33817331/1000000s" start="0s" duration="1155011/500000s"/>
+            <asset-clip name="PXL_20260228_043621865.TS" ref="r19" offset="36127353/1000000s" start="0s" duration="8706767/1000000s"/>
+            <asset-clip name="PXL_20260228_044106693.TS" ref="r20" offset="1120853/25000s" start="0s" duration="3214489/1000000s"/>
+            <asset-clip name="PXL_20260228_044404006.TS" ref="r21" offset="48048609/1000000s" start="0s" duration="3163289/500000s"/>
+            <asset-clip name="PXL_20260228_044416591.TS" ref="r22" offset="54375187/1000000s" start="0s" duration="314193/125000s"/>
+            <asset-clip name="PXL_20260228_044420502.TS" ref="r23" offset="56888731/1000000s" start="0s" duration="1556789/250000s"/>
+            <asset-clip name="PXL_20260228_044717742.TS" ref="r24" offset="63115887/1000000s" start="0s" duration="4420833/1000000s"/>
+            <asset-clip name="PXL_20260228_045546720.TS" ref="r25" offset="844209/12500s" start="0s" duration="3215811/1000000s"/>
+            <asset-clip name="PXL_20260228_045557442.TS" ref="r26" offset="70752531/1000000s" start="0s" duration="2611233/1000000s"/>
+            <asset-clip name="PXL_20260228_045610050.TS" ref="r27" offset="18340941/250000s" start="0s" duration="820289/500000s"/>
+            <asset-clip name="PXL_20260228_050707949.TS" ref="r28" offset="37502171/500000s" start="0s" duration="1188839/500000s"/>
+            <asset-clip name="PXL_20260228_050925056.TS" ref="r29" offset="3869101/50000s" start="0s" duration="1707411/1000000s"/>
+            <asset-clip name="PXL_20260228_051451384.TS" ref="r30" offset="79089431/1000000s" start="0s" duration="343161/250000s"/>
+            <asset-clip name="PXL_20260228_051846795.TS" ref="r31" offset="3218483/40000s" start="0s" duration="36157/10000s"/>
+            <asset-clip name="PXL_20260228_052342996.TS" ref="r32" offset="3363111/40000s" start="0s" duration="274943/125000s"/>
+            <asset-clip name="PXL_20260228_052547521.TS" ref="r33" offset="86277319/1000000s" start="0s" duration="5691233/1000000s"/>
+            <asset-clip name="PXL_20260228_052636142.TS" ref="r34" offset="11496069/125000s" start="0s" duration="4680733/1000000s"/>
+            <asset-clip name="PXL_20260228_052746449.TS" ref="r35" offset="19329857/200000s" start="0s" duration="2109433/1000000s"/>
+            <asset-clip name="PXL_20260228_053202573.TS" ref="r36" offset="49379359/500000s" start="0s" duration="334789/250000s"/>
+            <asset-clip name="PXL_20260228_060057315.TS" ref="r37" offset="50048937/500000s" start="0s" duration="3464739/500000s"/>
+            <asset-clip name="PXL_20260228_060500732.TS" ref="r38" offset="13378419/125000s" start="0s" duration="5207811/500000s"/>
+            <asset-clip name="PXL_20260228_062900274.TS" ref="r39" offset="58721487/500000s" start="0s" duration="456143/125000s"/>
+            <asset-clip name="PXL_20260228_063043860.TS" ref="r40" offset="60546059/500000s" start="0s" duration="468589/250000s"/>
+            <asset-clip name="PXL_20260228_063243219.TS" ref="r41" offset="61483237/500000s" start="0s" duration="619361/250000s"/>
+            <asset-clip name="PXL_20260228_063248952.TS" ref="r42" offset="62721959/500000s" start="0s" duration="2845767/1000000s"/>
+            <asset-clip name="PXL_20260228_063254430.TS" ref="r43" offset="25657937/200000s" start="0s" duration="1104889/500000s"/>
+            <asset-clip name="PXL_20260228_063305774.TS" ref="r44" offset="130499463/1000000s" start="0s" duration="2812267/1000000s"/>
+            <asset-clip name="PXL_20260228_063341878.TS" ref="r45" offset="13331173/100000s" start="0s" duration="1958511/500000s"/>
+            <asset-clip name="PXL_20260228_063348842.TS" ref="r46" offset="8576797/62500s" start="0s" duration="577539/250000s"/>
+            <asset-clip name="PXL_20260228_063354320.TS" ref="r47" offset="34884727/250000s" start="0s" duration="75327/10000s"/>
+            <asset-clip name="PXL_20260228_063414437.TS" ref="r48" offset="18383951/125000s" start="0s" duration="24773/10000s"/>
+            <asset-clip name="PXL_20260228_063553601.TS" ref="r49" offset="37387227/250000s" start="0s" duration="213441/62500s"/>
+            <asset-clip name="PXL_20260228_063710075.TS" ref="r50" offset="38240991/250000s" start="0s" duration="11551/5000s"/>
+            <asset-clip name="PXL_20260228_063722372.TS" ref="r51" offset="38818541/250000s" start="0s" duration="1356089/500000s"/>
+            <asset-clip name="PXL_20260228_063730961.TS" ref="r52" offset="78993171/500000s" start="0s" duration="586211/500000s"/>
+            <asset-clip name="PXL_20260228_080607192.TS" ref="r53" offset="39789691/250000s" start="0s" duration="3950389/1000000s"/>
+            <asset-clip name="PXL_20260228_080626099.TS" ref="r54" offset="163109153/1000000s" start="0s" duration="2812133/1000000s"/>
+            <asset-clip name="PXL_20260228_081835683.TS" ref="r55" offset="82960643/500000s" start="0s" duration="937389/1000000s"/>
+            <asset-clip name="PXL_20260228_084359709.TS" ref="r56" offset="6674347/40000s" start="0s" duration="3816467/1000000s"/>
+            <asset-clip name="PXL_20260228_085538807.TS" ref="r57" offset="85337571/500000s" start="0s" duration="1305211/500000s"/>
+            <asset-clip name="PXL_20260228_085737088.TS" ref="r58" offset="43321391/250000s" start="0s" duration="2880711/500000s"/>
+            <asset-clip name="PXL_20260228_095425743.TS" ref="r59" offset="89523493/500000s" start="0s" duration="8058189/1000000s"/>
+            <asset-clip name="PXL_20260228_095600451.TS" ref="r60" offset="7484207/40000s" start="0s" duration="1188461/250000s"/>
+            <asset-clip name="PXL_20260228_095812941.TS" ref="r61" offset="191859019/1000000s" start="0s" duration="3527067/1000000s"/>
+            <asset-clip name="PXL_20260228_100406509.TS" ref="r62" offset="97693043/500000s" start="0s" duration="1707367/1000000s"/>
+            <asset-clip name="PXL_20260228_100437471.TS" ref="r63" offset="197093453/1000000s" start="0s" duration="497593/125000s"/>
+            <asset-clip name="PXL_20260228_102312397.TS" ref="r64" offset="201074197/1000000s" start="0s" duration="2663389/500000s"/>
+            <asset-clip name="PXL_20260228_102424858.TS" ref="r65" offset="8256039/40000s" start="0s" duration="10797/2500s"/>
+            <asset-clip name="PXL_20260228_102431111.TS" ref="r66" offset="8428791/40000s" start="0s" duration="1305633/1000000s"/>
+            <asset-clip name="PXL_20260228_102526211.TS" ref="r67" offset="3312897/15625s" start="0s" duration="1831289/1000000s"/>
+            <asset-clip name="PXL_20260228_104245998.TS" ref="r68" offset="213856697/1000000s" start="0s" duration="1585139/500000s"/>
+            <asset-clip name="PXL_20260228_110142350.TS" ref="r69" offset="8681079/40000s" start="0s" duration="1071289/1000000s"/>
+            <asset-clip name="PXL_20260228_110258424.TS" ref="r70" offset="27262283/125000s" start="0s" duration="1113139/250000s"/>
+            <asset-clip name="PXL_20260228_110346673.TS" ref="r71" offset="11127541/50000s" start="0s" duration="27419511/1000000s"/>
+            <asset-clip name="PXL_20260228_110953500.TS" ref="r72" offset="249970331/1000000s" start="0s" duration="11717267/1000000s"/>
+            <asset-clip name="PXL_20260228_111117350.TS" ref="r73" offset="130843799/500000s" start="0s" duration="3884011/1000000s"/>
+            <asset-clip name="PXL_20260228_111743284.TS" ref="r74" offset="265571609/1000000s" start="0s" duration="428759/62500s"/>
+            <asset-clip name="PXL_20260228_113103625.TS" ref="r75" offset="272431753/1000000s" start="0s" duration="970657/125000s"/>
+            <asset-clip name="PXL_20260228_113800678.TS" ref="r76" offset="280197009/1000000s" start="0s" duration="3592561/500000s"/>
+            <asset-clip name="PXL_20260228_114155065.TS" ref="r77" offset="287382131/1000000s" start="0s" duration="36491/10000s"/>
+            <asset-clip name="PXL_20260228_115030480.TS" ref="r78" offset="291031231/1000000s" start="0s" duration="5058989/1000000s"/>
+            <asset-clip name="PXL_20260228_115039786.TS" ref="r79" offset="14804511/50000s" start="0s" duration="1930089/250000s"/>
+            <asset-clip name="PXL_20260228_115210922.TS" ref="r80" offset="18988161/62500s" start="0s" duration="3074961/500000s"/>
+            <asset-clip name="PXL_20260228_115733755.TS" ref="r81" offset="154980249/500000s" start="0s" duration="1221939/500000s"/>
+            <asset-clip name="PXL_20260228_115811537.TS" ref="r82" offset="39050547/125000s" start="0s" duration="2812133/1000000s"/>
+            <asset-clip name="PXL_20260228_124020735.TS" ref="r83" offset="315216509/1000000s" start="0s" duration="736511/500000s"/>
+            <asset-clip name="PXL_20260228_125638116.TS" ref="r84" offset="316689531/1000000s" start="0s" duration="1874761/500000s"/>
+            <asset-clip name="PXL_20260228_130238798.TS" ref="r85" offset="320439053/1000000s" start="0s" duration="334789/250000s"/>
+            <asset-clip name="PXL_20260228_131619274.TS" ref="r86" offset="321778209/1000000s" start="0s" duration="1565089/250000s"/>
+            <asset-clip name="PXL_20260228_134555037.TS" ref="r87" offset="65607713/200000s" start="0s" duration="180059/62500s"/>
+            <asset-clip name="PXL_20260228_140101820.TS" ref="r88" offset="330919509/1000000s" start="0s" duration="3515167/1000000s"/>
+            <asset-clip name="PXL_20260228_234304182.TS" ref="r89" offset="83608669/250000s" start="0s" duration="2443889/500000s"/>
+            <asset-clip name="PXL_20260301_001351284.TS" ref="r90" offset="169661227/500000s" start="0s" duration="1640439/500000s"/>
+            <asset-clip name="PXL_20260301_002543031.TS" ref="r91" offset="85650833/250000s" start="0s" duration="15391/5000s"/>
+            <asset-clip name="PXL_20260301_003845607.TS" ref="r92" offset="86420383/250000s" start="0s" duration="410139/250000s"/>
+            <asset-clip name="PXL_20260301_003855885.TS" ref="r93" offset="43415261/125000s" start="0s" duration="1389311/500000s"/>
+            <asset-clip name="PXL_20260301_004011052.TS" ref="r94" offset="35010071/100000s" start="0s" duration="5155167/1000000s"/>
+            <asset-clip name="PXL_20260301_004204794.TS" ref="r95" offset="355255877/1000000s" start="0s" duration="50199/10000s"/>
+            <asset-clip name="PXL_20260301_004516126.TS" ref="r96" offset="360275777/1000000s" start="0s" duration="9976411/1000000s"/>
+            <asset-clip name="PXL_20260301_011700772.TS" ref="r97" offset="92563047/250000s" start="0s" duration="2544311/1000000s"/>
+            <asset-clip name="PXL_20260301_014227775.TS" ref="r98" offset="372796499/1000000s" start="0s" duration="2577811/1000000s"/>
+            <asset-clip name="PXL_20260301_014930377.TS" ref="r99" offset="37537431/100000s" start="0s" duration="5858967/1000000s"/>
+            <asset-clip name="PXL_20260301_020017694.TS" ref="r100" offset="381233277/1000000s" start="0s" duration="6134367/1000000s"/>
+            <asset-clip name="PXL_20260301_020750438.TS" ref="r101" offset="96841911/250000s" start="0s" duration="6561667/1000000s"/>
+            <asset-clip name="PXL_20260301_022405519.TS" ref="r102" offset="393929311/1000000s" start="0s" duration="3682561/500000s"/>
+            <asset-clip name="PXL_20260301_024723435.TS" ref="r103" offset="401294433/1000000s" start="0s" duration="28339/5000s"/>
+            <asset-clip name="PXL_20260301_025821335.TS" ref="r104" offset="406962233/1000000s" start="0s" duration="4240189/1000000s"/>
+            <asset-clip name="PXL_20260301_025833991.TS" ref="r105" offset="205601211/500000s" start="0s" duration="6176289/1000000s"/>
+            <asset-clip name="PXL_20260301_030603510.TS" ref="r106" offset="417378711/1000000s" start="0s" duration="33143/10000s"/>
+            <asset-clip name="PXL_20260301_030919961.TS" ref="r107" offset="420693011/1000000s" start="0s" duration="5495267/1000000s"/>
+            <asset-clip name="PXL_20260301_033225258.TS" ref="r108" offset="213094139/500000s" start="0s" duration="3314311/1000000s"/>
+            <asset-clip name="PXL_20260301_033413297.TS" ref="r109" offset="429502589/1000000s" start="0s" duration="4117767/1000000s"/>
+            <asset-clip name="PXL_20260301_041840012.TS" ref="r110" offset="108405089/250000s" start="0s" duration="6762533/1000000s"/>
+            <asset-clip name="PXL_20260301_044422942.TS" ref="r111" offset="440382889/1000000s" start="0s" duration="123533/31250s"/>
+            <asset-clip name="PXL_20260301_050223575.TS" ref="r112" offset="88867189/200000s" start="0s" duration="4619967/1000000s"/>
+            <asset-clip name="PXL_20260301_051356909.TS" ref="r113" offset="56119489/125000s" start="0s" duration="1288961/500000s"/>
+            <asset-clip name="PXL_20260301_052022664.TS" ref="r114" offset="225766917/500000s" start="0s" duration="1690939/500000s"/>
+            <asset-clip name="PXL_20260301_052034745.TS" ref="r115" offset="7108058/15625s" start="0s" duration="3280833/1000000s"/>
+            <asset-clip name="PXL_20260301_062022811.TS" ref="r116" offset="91639309/200000s" start="0s" duration="4117511/1000000s"/>
+            <asset-clip name="PXL_20260301_062049978.TS" ref="r117" offset="57789257/125000s" start="0s" duration="9336967/1000000s"/>
+            <asset-clip name="PXL_20260301_062138241.TS" ref="r118" offset="471651023/1000000s" start="0s" duration="1071689/250000s"/>
+            <asset-clip name="PXL_20260301_062419731.TS" ref="r119" offset="475937779/1000000s" start="0s" duration="121459/10000s"/>
+            <asset-clip name="PXL_20260301_062434727.TS" ref="r120" offset="488083679/1000000s" start="0s" duration="736511/250000s"/>
+            <asset-clip name="PXL_20260301_064051093.TS" ref="r121" offset="491029723/1000000s" start="0s" duration="3548389/1000000s"/>
+            <asset-clip name="PXL_20260301_064156308.TS" ref="r122" offset="7727783/15625s" start="0s" duration="2361189/250000s"/>
+            <asset-clip name="PXL_20260301_065501472.TS" ref="r123" offset="126005717/250000s" start="0s" duration="1473289/500000s"/>
+            <asset-clip name="PXL_20260301_065648457.TS" ref="r124" offset="253484723/500000s" start="0s" duration="4118611/1000000s"/>
+            <asset-clip name="PXL_20260301_065946476.TS" ref="r125" offset="511088057/1000000s" start="0s" duration="4436533/1000000s"/>
+            <asset-clip name="PXL_20260301_070108757.TS" ref="r126" offset="51552459/100000s" start="0s" duration="1105111/500000s"/>
+            <asset-clip name="PXL_20260301_071026629.TS" ref="r127" offset="129433703/250000s" start="0s" duration="1037811/500000s"/>
+            <asset-clip name="PXL_20260301_072143916.TS" ref="r128" offset="259905217/500000s" start="0s" duration="5323111/1000000s"/>
+            <asset-clip name="PXL_20260301_072311213.TS" ref="r129" offset="105026709/200000s" start="0s" duration="887161/500000s"/>
+            <asset-clip name="PXL_20260301_072319634.TS" ref="r130" offset="526907867/1000000s" start="0s" duration="368261/250000s"/>
+            <asset-clip name="PXL_20260301_072944801.TS" ref="r131" offset="528380911/1000000s" start="0s" duration="6160767/1000000s"/>
+            <asset-clip name="PXL_20260301_073003479.TS" ref="r132" offset="267270839/500000s" start="0s" duration="971261/500000s"/>
+            <asset-clip name="PXL_20260301_073234463.TS" ref="r133" offset="2682421/5000s" start="0s" duration="3264339/500000s"/>
+            <asset-clip name="PXL_20260301_073749489.TS" ref="r134" offset="271506439/500000s" start="0s" duration="1942167/1000000s"/>
+            <asset-clip name="PXL_20260301_073756825.TS" ref="r135" offset="108991009/200000s" start="0s" duration="3013/2500s"/>
+            <asset-clip name="PXL_20260301_073945730.TS" ref="r136" offset="109232049/200000s" start="0s" duration="770239/500000s"/>
+            <asset-clip name="PXL_20260301_082133640.TS" ref="r137" offset="547700723/1000000s" start="0s" duration="12391/10000s"/>
+            <asset-clip name="PXL_20260301_082907419.TS" ref="r138" offset="548939823/1000000s" start="0s" duration="1104789/1000000s"/>
+            <asset-clip name="PXL_20260301_083107323.TS" ref="r139" offset="137511153/250000s" start="0s" duration="4552989/1000000s"/>
+            <asset-clip name="PXL_20260301_090312835.TS" ref="r140" offset="554597601/1000000s" start="0s" duration="2443889/500000s"/>
+            <asset-clip name="PXL_20260301_090831933.TS" ref="r141" offset="559485379/1000000s" start="0s" duration="11024211/1000000s"/>
+            <asset-clip name="PXL_20260301_094942927.TS" ref="r142" offset="57050959/100000s" start="0s" duration="79743/125000s"/>
+          </spine>
+        </sequence>
+      </project>
+    </event>
+  </library>
+</fcpxml>

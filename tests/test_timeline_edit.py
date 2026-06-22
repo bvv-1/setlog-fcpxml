@@ -1,0 +1,226 @@
+from __future__ import annotations
+
+import tempfile
+import unittest
+from subprocess import CompletedProcess
+from fractions import Fraction
+from pathlib import Path
+from unittest.mock import patch
+from xml.etree import ElementTree as ET
+
+from timeline_edit import (
+    EditableClip,
+    EditableTimeline,
+    cleanup_intermediate_files,
+    ensure_normalized_media,
+    export_timeline,
+    format_edit_time,
+    load_timeline,
+    move_clip,
+    parse_timecode,
+    save_timeline,
+    set_enabled,
+    trim_clip,
+    validate_timeline,
+)
+
+
+def make_timeline(tmp: Path) -> EditableTimeline:
+    first = tmp / "1.mp4"
+    second = tmp / "2.mp4"
+    first.write_text("", encoding="utf-8")
+    second.write_text("", encoding="utf-8")
+    return EditableTimeline(
+        project_name="timeline",
+        media_folder=tmp,
+        sequence_width=1920,
+        sequence_height=1080,
+        sequence_frame_rate=Fraction(30, 1),
+        clips=[
+            EditableClip("c001", first, Fraction(10, 1), Fraction(0, 1), Fraction(10, 1), 1920, 1080, Fraction(30, 1), True, "1"),
+            EditableClip("c002", second, Fraction(8, 1), Fraction(0, 1), Fraction(8, 1), 1920, 1080, Fraction(30, 1), True, "2"),
+        ],
+    )
+
+
+class TimelineEditTests(unittest.TestCase):
+    def test_save_and_load_round_trip(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = Path(tmpdir) / "timeline.yaml"
+            timeline = make_timeline(Path(tmpdir))
+
+            save_timeline(timeline, path)
+            loaded = load_timeline(path)
+
+            self.assertEqual(loaded.clips[0].id, "c001")
+            self.assertEqual(loaded.clips[1].original_duration, Fraction(8, 1))
+            self.assertEqual(loaded.clips[0].original_path, Path(tmpdir) / "1.mp4")
+            self.assertEqual(loaded.clips[0].rotation, 0)
+
+    def test_load_legacy_timeline_marks_rotation_unknown(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = Path(tmpdir) / "timeline.yaml"
+            save_timeline(make_timeline(Path(tmpdir)), path)
+            data = path.read_text(encoding="utf-8")
+            data = data.replace('      "original_path": "' + str(Path(tmpdir) / "1.mp4") + '",\n', "")
+            data = data.replace('      "rotation": 0,\n', "")
+            data = data.replace('      "normalized_path": null,\n', "")
+            path.write_text(data, encoding="utf-8")
+
+            loaded = load_timeline(path)
+
+            self.assertFalse(loaded.clips[0].rotation_checked)
+            self.assertEqual(loaded.clips[0].original_path, Path(tmpdir) / "1.mp4")
+
+    def test_parse_timecode_variants(self) -> None:
+        self.assertEqual(parse_timecode("1.25"), Fraction(5, 4))
+        self.assertEqual(parse_timecode("00:00:01.250"), Fraction(5, 4))
+        self.assertEqual(parse_timecode("00:00:01:15", Fraction(30, 1)), Fraction(3, 2))
+
+    def test_format_edit_time_preserves_microsecond_duration(self) -> None:
+        duration = Fraction(1039933, 1000000)
+
+        self.assertEqual(parse_timecode(format_edit_time(duration)), duration)
+
+    def test_trim_disable_move_and_export(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            timeline = make_timeline(Path(tmpdir))
+            timeline = trim_clip(timeline, "c001", "1", "3")
+            timeline = set_enabled(timeline, "c002", False)
+            timeline = move_clip(timeline, "c001", after="c002", before=None)
+            output = Path(tmpdir) / "timeline.fcpxml"
+
+            self.assertEqual(validate_timeline(timeline), [])
+            export_timeline(timeline, output)
+            root = ET.fromstring(output.read_text(encoding="utf-8"))
+            asset_clips = root.findall("./library/event/project/sequence/spine/asset-clip")
+
+            self.assertEqual([clip.id for clip in timeline.clips], ["c002", "c001"])
+            self.assertEqual(len(asset_clips), 1)
+            self.assertEqual(asset_clips[0].attrib["start"], "1s")
+            self.assertEqual(asset_clips[0].attrib["duration"], "2s")
+
+    def test_ensure_normalized_media_writes_rotated_proxy(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            base = Path(tmpdir)
+            source = base / "rotated.mp4"
+            source.write_text("source", encoding="utf-8")
+            timeline = EditableTimeline(
+                project_name="timeline",
+                media_folder=base,
+                sequence_width=1920,
+                sequence_height=1080,
+                sequence_frame_rate=Fraction(30, 1),
+                clips=[
+                    EditableClip(
+                        "c001",
+                        source,
+                        Fraction(10, 1),
+                        Fraction(0, 1),
+                        Fraction(10, 1),
+                        1920,
+                        1080,
+                        Fraction(30, 1),
+                        True,
+                        "rotated",
+                        original_path=source,
+                        rotation=180,
+                    )
+                ],
+            )
+
+            def fake_run(command: list[str], **_kwargs: object) -> CompletedProcess[str]:
+                Path(command[-1]).write_text("normalized", encoding="utf-8")
+                return CompletedProcess(command, 0, "", "")
+
+            with patch("timeline_edit.subprocess.run", side_effect=fake_run) as run:
+                normalized = ensure_normalized_media(timeline, base / "timeline.yaml")
+
+            clip = normalized.clips[0]
+            self.assertEqual(clip.path, base / ".setlog" / "normalized" / "c001.mp4")
+            self.assertEqual(clip.normalized_path, clip.path)
+            self.assertTrue(clip.path.exists())
+            self.assertIn("-autorotate", run.call_args.args[0])
+
+    def test_export_uses_normalized_path(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            base = Path(tmpdir)
+            source = base / "1.mp4"
+            normalized = base / ".setlog" / "normalized" / "c001.mp4"
+            source.write_text("", encoding="utf-8")
+            normalized.parent.mkdir(parents=True)
+            normalized.write_text("", encoding="utf-8")
+            timeline = EditableTimeline(
+                project_name="timeline",
+                media_folder=base,
+                sequence_width=1920,
+                sequence_height=1080,
+                sequence_frame_rate=Fraction(30, 1),
+                clips=[
+                    EditableClip(
+                        "c001",
+                        normalized,
+                        Fraction(10, 1),
+                        Fraction(0, 1),
+                        Fraction(10, 1),
+                        1920,
+                        1080,
+                        Fraction(30, 1),
+                        True,
+                        "1",
+                        original_path=source,
+                        rotation=180,
+                        normalized_path=normalized,
+                    )
+                ],
+            )
+            output = base / "timeline.fcpxml"
+
+            export_timeline(timeline, output)
+            root = ET.fromstring(output.read_text(encoding="utf-8"))
+            media_rep = root.find("./resources/asset/media-rep")
+
+            self.assertIsNotNone(media_rep)
+            self.assertEqual(media_rep.attrib["src"], normalized.as_uri())
+
+    def test_invalid_trim_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            timeline = make_timeline(Path(tmpdir))
+            with self.assertRaisesRegex(Exception, "out"):
+                trim_clip(timeline, "c001", "4", "2")
+
+    def test_cleanup_intermediate_files_removes_setlog_without_timeline(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            base = Path(tmpdir)
+            timeline_path = base / "timeline.yaml"
+            fcpxml_path = base / "timeline.fcpxml"
+            cache_file = base / ".setlog" / "previews" / "c001.png"
+            save_timeline(make_timeline(base), timeline_path)
+            fcpxml_path.write_text("<fcpxml />", encoding="utf-8")
+            cache_file.parent.mkdir(parents=True)
+            cache_file.write_text("cache", encoding="utf-8")
+
+            removed = cleanup_intermediate_files(timeline_path)
+
+            self.assertEqual(removed, [base / ".setlog"])
+            self.assertTrue(timeline_path.exists())
+            self.assertTrue(fcpxml_path.exists())
+            self.assertFalse((base / ".setlog").exists())
+
+    def test_cleanup_intermediate_files_can_remove_exports(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            base = Path(tmpdir)
+            timeline_path = base / "timeline.yaml"
+            fcpxml_path = base / "timeline.fcpxml"
+            save_timeline(make_timeline(base), timeline_path)
+            fcpxml_path.write_text("<fcpxml />", encoding="utf-8")
+
+            removed = cleanup_intermediate_files(timeline_path, include_exports=True)
+
+            self.assertEqual(removed, [fcpxml_path])
+            self.assertTrue(timeline_path.exists())
+            self.assertFalse(fcpxml_path.exists())
+
+
+if __name__ == "__main__":
+    unittest.main()
