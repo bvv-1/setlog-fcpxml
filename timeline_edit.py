@@ -628,6 +628,7 @@ def clear_clip_rotation_cache(timeline_path: Path, clip_id: str) -> list[Path]:
         timeline_path.parent / ".setlog" / "previews" / f"{clip_id}.preview.mp4",
         timeline_path.parent / ".setlog" / "previews" / f"{clip_id}.preview.json",
         timeline_path.parent / ".setlog" / "previews" / f"{clip_id}.png",
+        timeline_path.parent / ".setlog" / "previews" / f"{clip_id}.png.json",
         timeline_path.parent / ".setlog" / "thumbs" / f"{clip_id}.jpg",
     ]
     for path in candidates:
@@ -880,6 +881,12 @@ def generate_preview_image(
     preview_dir = timeline_path.parent / ".setlog" / "previews"
     preview_dir.mkdir(parents=True, exist_ok=True)
     preview_path = preview_dir / f"{clip.id}.png"
+    metadata_path = preview_dir / f"{clip.id}.png.json"
+    source_path = clip.path if clip.path.exists() else clip.source_path
+    metadata = preview_image_metadata(clip, source_path, width)
+    if not needs_preview_image_regeneration(preview_path, metadata_path, metadata):
+        return preview_path
+
     with tempfile.NamedTemporaryFile(
         prefix=f"{clip.id}.", suffix=".png", dir=preview_dir, delete=False
     ) as temp_file:
@@ -888,10 +895,12 @@ def generate_preview_image(
     command = [
         ffmpeg_path,
         "-y",
+        "-threads",
+        "1",
         "-ss",
         f"{float(capture_at):.6f}",
         "-i",
-        str(clip.path if clip.path.exists() else clip.source_path),
+        str(source_path),
         "-frames:v",
         "1",
         "-vf",
@@ -901,6 +910,9 @@ def generate_preview_image(
     try:
         subprocess.run(command, check=True, capture_output=True, text=True)
         temp_path.replace(preview_path)
+        metadata_path.write_text(
+            json.dumps(metadata, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+        )
     except FileNotFoundError as exc:
         temp_path.unlink(missing_ok=True)
         raise TimelineError(
@@ -916,3 +928,44 @@ def generate_preview_image(
         temp_path.unlink(missing_ok=True)
         raise
     return preview_path
+
+
+def preview_image_metadata(
+    clip: EditableClip, source_path: Path, width: int
+) -> dict[str, object]:
+    try:
+        source_stat = source_path.stat()
+        source_mtime_ns: int | None = source_stat.st_mtime_ns
+        source_size: int | None = source_stat.st_size
+    except OSError:
+        source_mtime_ns = None
+        source_size = None
+    return {
+        "version": 1,
+        "clip_id": clip.id,
+        "source_path": str(source_path),
+        "source_mtime_ns": source_mtime_ns,
+        "source_size": source_size,
+        "trim_in": fraction_to_text(clip.trim_in),
+        "timeline_duration": fraction_to_text(clip.timeline_duration),
+        "width": width,
+    }
+
+
+def needs_preview_image_regeneration(
+    preview_path: Path, metadata_path: Path, metadata: dict[str, object]
+) -> bool:
+    if not preview_path.exists():
+        return True
+    if metadata_path.exists():
+        try:
+            existing = json.loads(metadata_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            return True
+        return existing != metadata
+
+    source_path = Path(str(metadata["source_path"]))
+    try:
+        return preview_path.stat().st_mtime < source_path.stat().st_mtime
+    except OSError:
+        return True

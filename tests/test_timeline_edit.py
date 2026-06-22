@@ -17,6 +17,7 @@ from timeline_edit import (
     export_timeline,
     format_edit_time,
     generate_timeline_preview_clip,
+    generate_preview_image,
     load_timeline,
     move_clip,
     parse_timecode,
@@ -266,6 +267,7 @@ class TimelineEditTests(unittest.TestCase):
                 base / ".setlog" / "previews" / "c021.preview.mp4",
                 base / ".setlog" / "previews" / "c021.preview.json",
                 base / ".setlog" / "previews" / "c021.png",
+                base / ".setlog" / "previews" / "c021.png.json",
                 base / ".setlog" / "thumbs" / "c021.jpg",
             ]
             untouched = base / ".setlog" / "previews" / "c022.preview.mp4"
@@ -329,6 +331,51 @@ class TimelineEditTests(unittest.TestCase):
             self.assertTrue(
                 (base / ".setlog" / "previews" / "c004.preview.json").exists()
             )
+
+    def test_preview_image_uses_existing_cache(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            base = Path(tmpdir)
+            clip = make_timeline(base).clips[0]
+            preview_path = base / ".setlog" / "previews" / "c001.png"
+            preview_path.parent.mkdir(parents=True)
+
+            def fake_run(
+                command: list[str], **_kwargs: object
+            ) -> CompletedProcess[str]:
+                Path(command[-1]).write_text("preview", encoding="utf-8")
+                return CompletedProcess(command, 0, "", "")
+
+            with patch("timeline_edit.subprocess.run", side_effect=fake_run) as run:
+                first = generate_preview_image(clip, base / "timeline.yaml")
+                second = generate_preview_image(clip, base / "timeline.yaml")
+
+            self.assertEqual(first, preview_path)
+            self.assertEqual(second, preview_path)
+            self.assertEqual(run.call_count, 1)
+
+    def test_preview_image_regenerates_when_trim_changes(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            base = Path(tmpdir)
+            clip = make_timeline(base).clips[0]
+            changed_clip = EditableClip(
+                **{
+                    **clip.__dict__,
+                    "trim_in": Fraction(1, 1),
+                    "trim_out": Fraction(9, 1),
+                }
+            )
+
+            def fake_run(
+                command: list[str], **_kwargs: object
+            ) -> CompletedProcess[str]:
+                Path(command[-1]).write_text("preview", encoding="utf-8")
+                return CompletedProcess(command, 0, "", "")
+
+            with patch("timeline_edit.subprocess.run", side_effect=fake_run) as run:
+                generate_preview_image(clip, base / "timeline.yaml")
+                generate_preview_image(changed_clip, base / "timeline.yaml")
+
+            self.assertEqual(run.call_count, 2)
 
     def test_invalid_trim_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
