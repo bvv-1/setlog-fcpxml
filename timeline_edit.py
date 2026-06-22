@@ -9,7 +9,14 @@ from fractions import Fraction
 from pathlib import Path
 from typing import Any
 
-from fcpxml_generator import MediaClip, MediaProbeError, TimelineClip, probe_folder, probe_media, write_fcpxml_timeline
+from fcpxml_generator import (
+    MediaClip,
+    MediaProbeError,
+    TimelineClip,
+    probe_folder,
+    probe_media,
+    write_fcpxml_timeline,
+)
 
 
 TIMELINE_VERSION = 1
@@ -103,9 +110,14 @@ def parse_timecode(value: str, frame_rate: Fraction | None = None) -> Fraction:
 
     if len(parts) == 4:
         if frame_rate is None:
-            raise TimelineError("フレーム付きタイムコードにはフレームレートが必要です。")
+            raise TimelineError(
+                "フレーム付きタイムコードにはフレームレートが必要です。"
+            )
         hours, minutes, seconds, frames = (int(part) for part in parts)
-        return Fraction(hours * 3600 + minutes * 60 + seconds, 1) + Fraction(frames, 1) / frame_rate
+        return (
+            Fraction(hours * 3600 + minutes * 60 + seconds, 1)
+            + Fraction(frames, 1) / frame_rate
+        )
 
     raise TimelineError(f"時刻形式を解釈できません: {value}")
 
@@ -126,7 +138,9 @@ def format_edit_time(value: Fraction) -> str:
     return f"{hours:02d}:{minutes:02d}:{seconds:02d}.{micros:06d}"
 
 
-def scan_timeline(media_folder: Path, project_name: str = "timeline") -> EditableTimeline:
+def scan_timeline(
+    media_folder: Path, project_name: str = "timeline"
+) -> EditableTimeline:
     media_folder = media_folder.expanduser().resolve()
     clips = probe_folder(media_folder)
     if not clips:
@@ -138,7 +152,10 @@ def scan_timeline(media_folder: Path, project_name: str = "timeline") -> Editabl
         sequence_width=first.width,
         sequence_height=first.height,
         sequence_frame_rate=first.frame_rate,
-        clips=[_editable_clip_from_media(index, clip) for index, clip in enumerate(clips, start=1)],
+        clips=[
+            _editable_clip_from_media(index, clip)
+            for index, clip in enumerate(clips, start=1)
+        ],
     )
 
 
@@ -187,7 +204,9 @@ def timeline_to_dict(timeline: EditableTimeline) -> dict[str, Any]:
                 "audio_rate": clip.audio_rate,
                 "original_path": str(clip.original_path or clip.path),
                 "rotation": clip.rotation,
-                "normalized_path": str(clip.normalized_path) if clip.normalized_path else None,
+                "normalized_path": str(clip.normalized_path)
+                if clip.normalized_path
+                else None,
                 "name": clip.name,
                 "enabled": clip.enabled,
                 "note": clip.note,
@@ -222,7 +241,9 @@ def timeline_from_dict(data: dict[str, Any]) -> EditableTimeline:
                 audio_channels=item.get("audio_channels"),
                 audio_rate=item.get("audio_rate"),
                 rotation=int(item.get("rotation") or 0),
-                normalized_path=Path(normalized_path).expanduser() if normalized_path else None,
+                normalized_path=Path(normalized_path).expanduser()
+                if normalized_path
+                else None,
                 rotation_checked="rotation" in item,
                 name=item.get("name") or path.stem,
                 enabled=bool(item.get("enabled", True)),
@@ -286,7 +307,9 @@ def ensure_normalized_media(
         normalized_dir.mkdir(parents=True, exist_ok=True)
         normalized_path = normalized_dir / f"{checked_clip.id}.mp4"
         if needs_normalized_regeneration(checked_clip.source_path, normalized_path):
-            write_normalized_clip(checked_clip, normalized_path, ffmpeg_path=ffmpeg_path)
+            write_normalized_clip(
+                checked_clip, normalized_path, ffmpeg_path=ffmpeg_path
+            )
         next_clips.append(
             EditableClip(
                 **{
@@ -308,7 +331,9 @@ def ensure_normalized_media(
     )
 
 
-def detect_clip_rotation(clip: EditableClip, ffprobe_path: str = "ffprobe") -> EditableClip:
+def detect_clip_rotation(
+    clip: EditableClip, ffprobe_path: str = "ffprobe"
+) -> EditableClip:
     try:
         media = probe_media(clip.source_path, ffprobe_path=ffprobe_path)
     except MediaProbeError as exc:
@@ -335,7 +360,9 @@ def needs_normalized_regeneration(source_path: Path, normalized_path: Path) -> b
         return True
 
 
-def write_normalized_clip(clip: EditableClip, normalized_path: Path, ffmpeg_path: str = "ffmpeg") -> None:
+def write_normalized_clip(
+    clip: EditableClip, normalized_path: Path, ffmpeg_path: str = "ffmpeg"
+) -> None:
     with tempfile.NamedTemporaryFile(
         prefix=f"{clip.id}.",
         suffix=".mp4",
@@ -377,24 +404,171 @@ def write_normalized_clip(clip: EditableClip, normalized_path: Path, ffmpeg_path
         temp_path.replace(normalized_path)
     except FileNotFoundError as exc:
         temp_path.unlink(missing_ok=True)
-        raise TimelineError("ffmpeg が見つかりません。Homebrew などで ffmpeg をインストールしてください。") from exc
+        raise TimelineError(
+            "ffmpeg が見つかりません。Homebrew などで ffmpeg をインストールしてください。"
+        ) from exc
     except subprocess.CalledProcessError as exc:
         temp_path.unlink(missing_ok=True)
         detail = exc.stderr.strip() or exc.stdout.strip() or str(exc)
-        raise TimelineError(f"{clip.id} の回転補正済み動画生成に失敗しました: {detail}") from exc
+        raise TimelineError(
+            f"{clip.id} の回転補正済み動画生成に失敗しました: {detail}"
+        ) from exc
     except OSError:
         temp_path.unlink(missing_ok=True)
         raise
 
 
-def get_intermediate_paths(timeline_path: Path, include_exports: bool = False) -> list[Path]:
+def get_preview_video_source(clip: EditableClip) -> Path:
+    if clip.normalized_path and clip.normalized_path.exists():
+        return clip.normalized_path
+    if clip.path.exists():
+        return clip.path
+    return clip.source_path
+
+
+def generate_timeline_preview_clip(
+    clip: EditableClip,
+    timeline_path: Path,
+    sequence_width: int,
+    sequence_height: int,
+    sequence_frame_rate: Fraction,
+    ffmpeg_path: str = "ffmpeg",
+) -> Path:
+    preview_dir = timeline_path.parent / ".setlog" / "previews"
+    preview_dir.mkdir(parents=True, exist_ok=True)
+    preview_path = preview_dir / f"{clip.id}.preview.mp4"
+    metadata_path = preview_dir / f"{clip.id}.preview.json"
+    source_path = get_preview_video_source(clip)
+    duration = clip.timeline_duration
+    if duration <= 0:
+        raise TimelineError(f"{clip.id} のプレビュー尺が不正です。")
+
+    metadata = timeline_preview_metadata(
+        clip,
+        source_path,
+        sequence_width,
+        sequence_height,
+        sequence_frame_rate,
+    )
+    if not needs_timeline_preview_regeneration(preview_path, metadata_path, metadata):
+        return preview_path
+
+    width = max(2, sequence_width - sequence_width % 2)
+    height = max(2, sequence_height - sequence_height % 2)
+    frame_rate = fraction_to_text(sequence_frame_rate)
+    video_filter = (
+        f"scale={width}:{height}:force_original_aspect_ratio=decrease,"
+        f"pad={width}:{height}:(ow-iw)/2:(oh-ih)/2,"
+        f"setsar=1,fps={frame_rate}"
+    )
+    with tempfile.NamedTemporaryFile(
+        prefix=f"{clip.id}.preview.",
+        suffix=".mp4",
+        dir=preview_dir,
+        delete=False,
+    ) as temp_file:
+        temp_path = Path(temp_file.name)
+
+    command = [
+        ffmpeg_path,
+        "-y",
+        "-i",
+        str(source_path),
+        "-ss",
+        f"{float(clip.trim_in):.6f}",
+        "-t",
+        f"{float(duration):.6f}",
+        "-map",
+        "0:v:0",
+        "-an",
+        "-vf",
+        video_filter,
+        "-c:v",
+        "libx264",
+        "-preset",
+        "veryfast",
+        "-crf",
+        "23",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
+        str(temp_path),
+    ]
+    try:
+        subprocess.run(command, check=True, capture_output=True, text=True)
+        temp_path.replace(preview_path)
+        metadata_path.write_text(
+            json.dumps(metadata, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+        )
+    except FileNotFoundError as exc:
+        temp_path.unlink(missing_ok=True)
+        raise TimelineError(
+            "ffmpeg が見つかりません。Homebrew などで ffmpeg をインストールしてください。"
+        ) from exc
+    except subprocess.CalledProcessError as exc:
+        temp_path.unlink(missing_ok=True)
+        detail = exc.stderr.strip() or exc.stdout.strip() or str(exc)
+        raise TimelineError(
+            f"{clip.id} の連続プレビュー生成に失敗しました: {detail}"
+        ) from exc
+    except OSError:
+        temp_path.unlink(missing_ok=True)
+        raise
+    return preview_path
+
+
+def timeline_preview_metadata(
+    clip: EditableClip,
+    source_path: Path,
+    sequence_width: int,
+    sequence_height: int,
+    sequence_frame_rate: Fraction,
+) -> dict[str, Any]:
+    try:
+        source_stat = source_path.stat()
+        source_mtime_ns = source_stat.st_mtime_ns
+        source_size = source_stat.st_size
+    except OSError:
+        source_mtime_ns = None
+        source_size = None
+    return {
+        "source_path": str(source_path),
+        "source_mtime_ns": source_mtime_ns,
+        "source_size": source_size,
+        "trim_in": fraction_to_text(clip.trim_in),
+        "trim_out": fraction_to_text(clip.trim_out),
+        "sequence_width": sequence_width,
+        "sequence_height": sequence_height,
+        "sequence_frame_rate": fraction_to_text(sequence_frame_rate),
+    }
+
+
+def needs_timeline_preview_regeneration(
+    preview_path: Path,
+    metadata_path: Path,
+    metadata: dict[str, Any],
+) -> bool:
+    if not preview_path.exists() or not metadata_path.exists():
+        return True
+    try:
+        return json.loads(metadata_path.read_text(encoding="utf-8")) != metadata
+    except (OSError, json.JSONDecodeError):
+        return True
+
+
+def get_intermediate_paths(
+    timeline_path: Path, include_exports: bool = False
+) -> list[Path]:
     paths = [timeline_path.parent / ".setlog"]
     if include_exports:
         paths.append(timeline_path.parent / "timeline.fcpxml")
     return paths
 
 
-def cleanup_intermediate_files(timeline_path: Path, include_exports: bool = False) -> list[Path]:
+def cleanup_intermediate_files(
+    timeline_path: Path, include_exports: bool = False
+) -> list[Path]:
     removed: list[Path] = []
     for path in get_intermediate_paths(timeline_path, include_exports=include_exports):
         if path.is_dir():
@@ -433,21 +607,32 @@ def require_clip(timeline: EditableTimeline, clip_id: str) -> EditableClip:
     raise TimelineError(f"clip id が見つかりません: {clip_id}")
 
 
-def replace_clip(timeline: EditableTimeline, updated_clip: EditableClip) -> EditableTimeline:
+def replace_clip(
+    timeline: EditableTimeline, updated_clip: EditableClip
+) -> EditableTimeline:
     return EditableTimeline(
         project_name=timeline.project_name,
         media_folder=timeline.media_folder,
         sequence_width=timeline.sequence_width,
         sequence_height=timeline.sequence_height,
         sequence_frame_rate=timeline.sequence_frame_rate,
-        clips=[updated_clip if clip.id == updated_clip.id else clip for clip in timeline.clips],
+        clips=[
+            updated_clip if clip.id == updated_clip.id else clip
+            for clip in timeline.clips
+        ],
     )
 
 
-def trim_clip(timeline: EditableTimeline, clip_id: str, trim_in: str | None, trim_out: str | None) -> EditableTimeline:
+def trim_clip(
+    timeline: EditableTimeline, clip_id: str, trim_in: str | None, trim_out: str | None
+) -> EditableTimeline:
     clip = require_clip(timeline, clip_id)
-    next_in = clip.trim_in if trim_in is None else parse_timecode(trim_in, clip.frame_rate)
-    next_out = clip.trim_out if trim_out is None else parse_timecode(trim_out, clip.frame_rate)
+    next_in = (
+        clip.trim_in if trim_in is None else parse_timecode(trim_in, clip.frame_rate)
+    )
+    next_out = (
+        clip.trim_out if trim_out is None else parse_timecode(trim_out, clip.frame_rate)
+    )
     updated = EditableClip(
         **{
             **clip.__dict__,
@@ -462,7 +647,9 @@ def trim_clip(timeline: EditableTimeline, clip_id: str, trim_in: str | None, tri
     return result
 
 
-def set_enabled(timeline: EditableTimeline, clip_id: str, enabled: bool) -> EditableTimeline:
+def set_enabled(
+    timeline: EditableTimeline, clip_id: str, enabled: bool
+) -> EditableTimeline:
     clip = require_clip(timeline, clip_id)
     updated = EditableClip(**{**clip.__dict__, "enabled": enabled})
     result = replace_clip(timeline, updated)
@@ -477,7 +664,9 @@ def set_note(timeline: EditableTimeline, clip_id: str, note: str) -> EditableTim
     return replace_clip(timeline, EditableClip(**{**clip.__dict__, "note": note}))
 
 
-def move_clip(timeline: EditableTimeline, clip_id: str, before: str | None, after: str | None) -> EditableTimeline:
+def move_clip(
+    timeline: EditableTimeline, clip_id: str, before: str | None, after: str | None
+) -> EditableTimeline:
     if bool(before) == bool(after):
         raise TimelineError("--before または --after のどちらか1つを指定してください。")
     moving = require_clip(timeline, clip_id)
@@ -487,7 +676,9 @@ def move_clip(timeline: EditableTimeline, clip_id: str, before: str | None, afte
     require_clip(timeline, target_id or "")
 
     remaining = [clip for clip in timeline.clips if clip.id != clip_id]
-    target_index = next(index for index, clip in enumerate(remaining) if clip.id == target_id)
+    target_index = next(
+        index for index, clip in enumerate(remaining) if clip.id == target_id
+    )
     insert_at = target_index if before else target_index + 1
     next_clips = remaining[:insert_at] + [moving] + remaining[insert_at:]
     return EditableTimeline(
@@ -549,11 +740,17 @@ def make_show_table(timeline: EditableTimeline) -> str:
     widths = [max(len(row[index]) for row in rows) for index in range(len(rows[0]))]
     lines = []
     for row in rows:
-        lines.append("  ".join(cell.ljust(widths[index]) for index, cell in enumerate(row)).rstrip())
+        lines.append(
+            "  ".join(
+                cell.ljust(widths[index]) for index, cell in enumerate(row)
+            ).rstrip()
+        )
     return "\n".join(lines)
 
 
-def generate_thumbnails(timeline: EditableTimeline, timeline_path: Path, ffmpeg_path: str = "ffmpeg") -> EditableTimeline:
+def generate_thumbnails(
+    timeline: EditableTimeline, timeline_path: Path, ffmpeg_path: str = "ffmpeg"
+) -> EditableTimeline:
     thumb_dir = timeline_path.parent / ".setlog" / "thumbs"
     thumb_dir.mkdir(parents=True, exist_ok=True)
     next_clips = []
@@ -576,11 +773,17 @@ def generate_thumbnails(timeline: EditableTimeline, timeline_path: Path, ffmpeg_
         try:
             subprocess.run(command, check=True, capture_output=True, text=True)
         except FileNotFoundError as exc:
-            raise TimelineError("ffmpeg が見つかりません。Homebrew などで ffmpeg をインストールしてください。") from exc
+            raise TimelineError(
+                "ffmpeg が見つかりません。Homebrew などで ffmpeg をインストールしてください。"
+            ) from exc
         except subprocess.CalledProcessError as exc:
             detail = exc.stderr.strip() or exc.stdout.strip() or str(exc)
-            raise TimelineError(f"{clip.id} のサムネイル生成に失敗しました: {detail}") from exc
-        next_clips.append(EditableClip(**{**clip.__dict__, "thumbnail": str(thumb_path)}))
+            raise TimelineError(
+                f"{clip.id} のサムネイル生成に失敗しました: {detail}"
+            ) from exc
+        next_clips.append(
+            EditableClip(**{**clip.__dict__, "thumbnail": str(thumb_path)})
+        )
     return EditableTimeline(
         project_name=timeline.project_name,
         media_folder=timeline.media_folder,
@@ -600,7 +803,9 @@ def generate_preview_image(
     preview_dir = timeline_path.parent / ".setlog" / "previews"
     preview_dir.mkdir(parents=True, exist_ok=True)
     preview_path = preview_dir / f"{clip.id}.png"
-    with tempfile.NamedTemporaryFile(prefix=f"{clip.id}.", suffix=".png", dir=preview_dir, delete=False) as temp_file:
+    with tempfile.NamedTemporaryFile(
+        prefix=f"{clip.id}.", suffix=".png", dir=preview_dir, delete=False
+    ) as temp_file:
         temp_path = Path(temp_file.name)
     capture_at = clip.trim_in + clip.timeline_duration / 2
     command = [
@@ -621,11 +826,15 @@ def generate_preview_image(
         temp_path.replace(preview_path)
     except FileNotFoundError as exc:
         temp_path.unlink(missing_ok=True)
-        raise TimelineError("ffmpeg が見つかりません。Homebrew などで ffmpeg をインストールしてください。") from exc
+        raise TimelineError(
+            "ffmpeg が見つかりません。Homebrew などで ffmpeg をインストールしてください。"
+        ) from exc
     except subprocess.CalledProcessError as exc:
         temp_path.unlink(missing_ok=True)
         detail = exc.stderr.strip() or exc.stdout.strip() or str(exc)
-        raise TimelineError(f"{clip.id} のプレビュー生成に失敗しました: {detail}") from exc
+        raise TimelineError(
+            f"{clip.id} のプレビュー生成に失敗しました: {detail}"
+        ) from exc
     except OSError:
         temp_path.unlink(missing_ok=True)
         raise

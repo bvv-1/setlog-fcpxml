@@ -6,7 +6,19 @@ import tempfile
 import threading
 from fractions import Fraction
 from pathlib import Path
-from tkinter import BooleanVar, Canvas, Menu, PhotoImage, StringVar, TclError, Text, Tk, filedialog, messagebox, ttk
+from tkinter import (
+    BooleanVar,
+    Canvas,
+    Menu,
+    PhotoImage,
+    StringVar,
+    TclError,
+    Text,
+    Tk,
+    filedialog,
+    messagebox,
+    ttk,
+)
 
 from fcpxml_generator import MediaProbeError
 from timeline_edit import (
@@ -19,6 +31,7 @@ from timeline_edit import (
     format_edit_time,
     format_time,
     generate_preview_image,
+    generate_timeline_preview_clip,
     load_timeline,
     move_clip,
     save_timeline,
@@ -48,7 +61,9 @@ class TimelineApp:
         self.timeline: EditableTimeline | None = None
         self.selected_clip_id: str | None = None
         self.preview_image: PhotoImage | None = None
-        self.editor_status = StringVar(value="未保存です。保存すると自動保存が有効になります。")
+        self.editor_status = StringVar(
+            value="未保存です。保存すると自動保存が有効になります。"
+        )
         self.clip_enabled = BooleanVar(value=True)
         self.clip_detail = StringVar()
         self.clip_trim_in = StringVar()
@@ -93,12 +108,22 @@ class TimelineApp:
     def _build_start_screen(self, frame: ttk.Frame) -> None:
         frame.columnconfigure(1, weight=1)
 
-        ttk.Label(frame, text="素材フォルダ").grid(row=0, column=0, sticky="w", pady=(0, 8))
-        ttk.Entry(frame, textvariable=self.media_folder).grid(row=0, column=1, sticky="ew", padx=8, pady=(0, 8))
-        ttk.Button(frame, text="選択", command=self.choose_media_folder).grid(row=0, column=2, pady=(0, 8))
+        ttk.Label(frame, text="素材フォルダ").grid(
+            row=0, column=0, sticky="w", pady=(0, 8)
+        )
+        ttk.Entry(frame, textvariable=self.media_folder).grid(
+            row=0, column=1, sticky="ew", padx=8, pady=(0, 8)
+        )
+        ttk.Button(frame, text="選択", command=self.choose_media_folder).grid(
+            row=0, column=2, pady=(0, 8)
+        )
 
-        ttk.Label(frame, text="プロジェクト名").grid(row=1, column=0, sticky="w", pady=(0, 16))
-        ttk.Entry(frame, textvariable=self.project_name).grid(row=1, column=1, sticky="ew", padx=8, pady=(0, 16))
+        ttk.Label(frame, text="プロジェクト名").grid(
+            row=1, column=0, sticky="w", pady=(0, 16)
+        )
+        ttk.Entry(frame, textvariable=self.project_name).grid(
+            row=1, column=1, sticky="ew", padx=8, pady=(0, 16)
+        )
 
         actions = ttk.Frame(frame)
         actions.grid(row=2, column=0, columnspan=3, sticky="ew", pady=(8, 16))
@@ -106,14 +131,18 @@ class TimelineApp:
         actions.columnconfigure(1, weight=1)
         self.start_button = ttk.Button(actions, text="OK", command=self.start_editing)
         self.start_button.grid(row=0, column=0, sticky="ew")
-        ttk.Button(actions, text="既存の timeline.yaml を開く", command=self.open_timeline).grid(
+        ttk.Button(
+            actions, text="既存の timeline.yaml を開く", command=self.open_timeline
+        ).grid(
             row=0,
             column=1,
             sticky="ew",
             padx=(8, 0),
         )
 
-        ttk.Label(frame, textvariable=self.status, wraplength=720).grid(row=3, column=0, columnspan=3, sticky="w")
+        ttk.Label(frame, textvariable=self.status, wraplength=720).grid(
+            row=3, column=0, columnspan=3, sticky="w"
+        )
 
     def _build_editor_screen(self, frame: ttk.Frame) -> None:
         frame.columnconfigure(0, weight=1)
@@ -122,22 +151,37 @@ class TimelineApp:
 
         toolbar = ttk.Frame(frame)
         toolbar.grid(row=0, column=0, columnspan=2, sticky="ew", pady=(0, 12))
-        ttk.Button(toolbar, text="一時保存", command=self.save_project).pack(side="left")
-        ttk.Button(toolbar, text="再読み込み", command=self.reload_timeline).pack(side="left", padx=(8, 0))
-        ttk.Button(toolbar, text="連続プレビュー", command=self.play_timeline_preview).pack(side="left", padx=(8, 0))
-        ttk.Button(toolbar, text="停止", command=self.stop_timeline_preview).pack(side="left", padx=(8, 0))
-        ttk.Label(toolbar, textvariable=self.editor_status).pack(side="left", padx=(16, 0))
+        ttk.Button(toolbar, text="一時保存", command=self.save_project).pack(
+            side="left"
+        )
+        ttk.Button(toolbar, text="再読み込み", command=self.reload_timeline).pack(
+            side="left", padx=(8, 0)
+        )
+        ttk.Button(
+            toolbar, text="連続プレビュー", command=self.play_timeline_preview
+        ).pack(side="left", padx=(8, 0))
+        ttk.Button(toolbar, text="停止", command=self.stop_timeline_preview).pack(
+            side="left", padx=(8, 0)
+        )
+        ttk.Label(toolbar, textvariable=self.editor_status).pack(
+            side="left", padx=(16, 0)
+        )
         settings_button = ttk.Menubutton(toolbar, text="⚙")
         settings_menu = Menu(settings_button, tearoff=False)
         settings_menu.add_command(label="キャッシュを削除", command=self.cleanup_cache)
-        settings_menu.add_command(label="キャッシュと出力XMLを削除", command=lambda: self.cleanup_cache(include_exports=True))
+        settings_menu.add_command(
+            label="キャッシュと出力XMLを削除",
+            command=lambda: self.cleanup_cache(include_exports=True),
+        )
         settings_button.configure(menu=settings_menu)
         settings_button.pack(side="right")
 
         timeline_frame = ttk.Frame(frame)
         timeline_frame.grid(row=1, column=0, columnspan=2, sticky="ew", pady=(0, 12))
         timeline_frame.columnconfigure(0, weight=1)
-        ttk.Label(timeline_frame, textvariable=self.timeline_summary).grid(row=0, column=0, sticky="w", pady=(0, 4))
+        ttk.Label(timeline_frame, textvariable=self.timeline_summary).grid(
+            row=0, column=0, sticky="w", pady=(0, 4)
+        )
         self.timeline_canvas = Canvas(
             timeline_frame,
             height=74,
@@ -156,7 +200,9 @@ class TimelineApp:
         list_frame.columnconfigure(0, weight=1)
 
         columns = ("on", "start", "dur", "name")
-        self.clip_tree = ttk.Treeview(list_frame, columns=columns, show="tree headings", selectmode="browse")
+        self.clip_tree = ttk.Treeview(
+            list_frame, columns=columns, show="tree headings", selectmode="browse"
+        )
         self.clip_tree.heading("#0", text="id")
         self.clip_tree.heading("on", text="on")
         self.clip_tree.heading("start", text="start")
@@ -168,7 +214,9 @@ class TimelineApp:
         self.clip_tree.column("dur", width=112, stretch=False)
         self.clip_tree.column("name", width=220, stretch=True)
         self.clip_tree.grid(row=0, column=0, sticky="nsew")
-        scrollbar = ttk.Scrollbar(list_frame, orient="vertical", command=self.clip_tree.yview)
+        scrollbar = ttk.Scrollbar(
+            list_frame, orient="vertical", command=self.clip_tree.yview
+        )
         scrollbar.grid(row=0, column=1, sticky="ns")
         self.clip_tree.configure(yscrollcommand=scrollbar.set)
         self.clip_tree.bind("<<TreeviewSelect>>", self.on_clip_selected)
@@ -178,29 +226,45 @@ class TimelineApp:
         detail.columnconfigure(0, weight=1)
         detail.rowconfigure(1, weight=1)
 
-        ttk.Label(detail, textvariable=self.clip_detail).grid(row=0, column=0, sticky="w", pady=(0, 8))
+        ttk.Label(detail, textvariable=self.clip_detail).grid(
+            row=0, column=0, sticky="w", pady=(0, 8)
+        )
         preview_frame = ttk.Frame(detail, relief="solid", borderwidth=1)
         preview_frame.grid(row=1, column=0, sticky="nsew")
         preview_frame.columnconfigure(0, weight=1)
         preview_frame.rowconfigure(0, weight=1)
-        self.preview_label = ttk.Label(preview_frame, text="クリップを選択してください。", anchor="center")
+        self.preview_label = ttk.Label(
+            preview_frame, text="クリップを選択してください。", anchor="center"
+        )
         self.preview_label.grid(row=0, column=0, sticky="nsew")
 
         controls = ttk.Frame(detail)
         controls.grid(row=2, column=0, sticky="ew", pady=(12, 8))
         controls.columnconfigure(2, weight=1)
         controls.columnconfigure(4, weight=1)
-        ttk.Checkbutton(controls, text="採用", variable=self.clip_enabled).grid(row=0, column=0, sticky="w", padx=(0, 12))
+        ttk.Checkbutton(controls, text="採用", variable=self.clip_enabled).grid(
+            row=0, column=0, sticky="w", padx=(0, 12)
+        )
         ttk.Label(controls, text="in").grid(row=0, column=1, sticky="e")
-        ttk.Entry(controls, textvariable=self.clip_trim_in, width=16).grid(row=0, column=2, sticky="ew", padx=(4, 12))
+        ttk.Entry(controls, textvariable=self.clip_trim_in, width=16).grid(
+            row=0, column=2, sticky="ew", padx=(4, 12)
+        )
         ttk.Label(controls, text="out").grid(row=0, column=3, sticky="e")
-        ttk.Entry(controls, textvariable=self.clip_trim_out, width=16).grid(row=0, column=4, sticky="ew", padx=(4, 0))
+        ttk.Entry(controls, textvariable=self.clip_trim_out, width=16).grid(
+            row=0, column=4, sticky="ew", padx=(4, 0)
+        )
 
         actions = ttk.Frame(detail)
         actions.grid(row=3, column=0, sticky="ew", pady=(0, 8))
-        ttk.Button(actions, text="上へ", command=self.move_selected_up).pack(side="left")
-        ttk.Button(actions, text="下へ", command=self.move_selected_down).pack(side="left", padx=(8, 0))
-        ttk.Button(actions, text="変更を保存", command=self.save_selected_edit).pack(side="left", padx=(12, 0))
+        ttk.Button(actions, text="上へ", command=self.move_selected_up).pack(
+            side="left"
+        )
+        ttk.Button(actions, text="下へ", command=self.move_selected_down).pack(
+            side="left", padx=(8, 0)
+        )
+        ttk.Button(actions, text="変更を保存", command=self.save_selected_edit).pack(
+            side="left", padx=(12, 0)
+        )
 
         ttk.Label(detail, text="メモ").grid(row=4, column=0, sticky="w")
         self.note_text = Text(detail, height=5, wrap="word")
@@ -249,7 +313,9 @@ class TimelineApp:
         self.timeline_path = None
         self.output_folder = None
         self.autosave_enabled = False
-        self.editor_status.set("未保存です。一時保存または Ctrl+S で保存先を選択してください。")
+        self.editor_status.set(
+            "未保存です。一時保存または Ctrl+S で保存先を選択してください。"
+        )
         self.status.set(f"クリップ数: {len(timeline.clips)}")
         self.show_editor_screen()
         self.populate_clip_tree()
@@ -269,7 +335,9 @@ class TimelineApp:
 
     def reload_timeline(self) -> None:
         if not self.timeline_path:
-            messagebox.showerror("入力エラー", "保存済みの timeline.yaml がありません。")
+            messagebox.showerror(
+                "入力エラー", "保存済みの timeline.yaml がありません。"
+            )
             return
         self.load_timeline_file(self.timeline_path)
 
@@ -300,12 +368,21 @@ class TimelineApp:
                 "end",
                 iid=clip.id,
                 text=clip.id,
-                values=("yes" if clip.enabled else "no", start, format_time(clip.timeline_duration), clip.name),
+                values=(
+                    "yes" if clip.enabled else "no",
+                    start,
+                    format_time(clip.timeline_duration),
+                    clip.name,
+                ),
             )
             if clip.enabled:
                 offset += clip.timeline_duration
         if self.timeline.clips:
-            next_id = select_id if select_id in {clip.id for clip in self.timeline.clips} else self.timeline.clips[0].id
+            next_id = (
+                select_id
+                if select_id in {clip.id for clip in self.timeline.clips}
+                else self.timeline.clips[0].id
+            )
             self.clip_tree.selection_set(next_id)
             self.clip_tree.focus(next_id)
         self.draw_timeline_visual()
@@ -332,7 +409,9 @@ class TimelineApp:
             return
 
         enabled_clips = [clip for clip in self.timeline.clips if clip.enabled]
-        total_duration = sum((clip.timeline_duration for clip in enabled_clips), Fraction(0, 1))
+        total_duration = sum(
+            (clip.timeline_duration for clip in enabled_clips), Fraction(0, 1)
+        )
         if total_duration <= 0:
             self.timeline_summary.set("有効なクリップがありません")
             self.timeline_canvas.create_text(
@@ -389,7 +468,9 @@ class TimelineApp:
             self.timeline_visual_segments.append((x1, x2, clip.id))
             offset += clip.timeline_duration
 
-        self.timeline_canvas.create_text(padding_x, ruler_y, text="00:00:00.000", fill="#bdc1c6", anchor="w")
+        self.timeline_canvas.create_text(
+            padding_x, ruler_y, text="00:00:00.000", fill="#bdc1c6", anchor="w"
+        )
         self.timeline_canvas.create_text(
             width - padding_x,
             ruler_y,
@@ -429,7 +510,9 @@ class TimelineApp:
         )
         self.draw_timeline_visual()
         self.preview_label.configure(text="プレビュー生成中...", image="")
-        threading.Thread(target=self._load_preview_in_background, args=(clip,), daemon=True).start()
+        threading.Thread(
+            target=self._load_preview_in_background, args=(clip,), daemon=True
+        ).start()
 
     def _load_preview_in_background(self, clip: EditableClip) -> None:
         preview_base = self.get_cache_base_path()
@@ -473,7 +556,9 @@ class TimelineApp:
 
         self.stop_timeline_preview(update_status=False)
         try:
-            self.timeline = ensure_normalized_media(self.timeline, self.get_cache_base_path())
+            self.timeline = ensure_normalized_media(
+                self.timeline, self.get_cache_base_path()
+            )
             enabled_clips = [clip for clip in self.timeline.clips if clip.enabled]
             concat_path = self.write_preview_concat_file(enabled_clips)
             self.preview_player = subprocess.Popen(
@@ -496,20 +581,36 @@ class TimelineApp:
                 text=True,
             )
         except FileNotFoundError:
-            messagebox.showerror("プレビュー失敗", "ffplay が見つかりません。Homebrew などで ffmpeg をインストールしてください。")
+            messagebox.showerror(
+                "プレビュー失敗",
+                "ffplay が見つかりません。Homebrew などで ffmpeg をインストールしてください。",
+            )
+            return
+        except TimelineError as exc:
+            messagebox.showerror("プレビュー失敗", str(exc))
             return
         except OSError as exc:
             messagebox.showerror("プレビュー失敗", str(exc))
             return
 
-        self.root.after(300, self.focus_timeline_preview_window, self.preview_player.pid)
-        total_duration = sum((clip.timeline_duration for clip in enabled_clips), Fraction(0, 1))
-        self.editor_status.set(f"連続プレビュー中: {len(enabled_clips)} clips / {format_time(total_duration)}")
+        self.root.after(
+            300, self.focus_timeline_preview_window, self.preview_player.pid
+        )
+        total_duration = sum(
+            (clip.timeline_duration for clip in enabled_clips), Fraction(0, 1)
+        )
+        self.editor_status.set(
+            f"連続プレビュー中: {len(enabled_clips)} clips / {format_time(total_duration)}"
+        )
 
     def focus_timeline_preview_window(self, process_id: int, attempts: int = 4) -> None:
         if sys.platform != "darwin":
             return
-        if not self.preview_player or self.preview_player.pid != process_id or self.preview_player.poll() is not None:
+        if (
+            not self.preview_player
+            or self.preview_player.pid != process_id
+            or self.preview_player.poll() is not None
+        ):
             return
         script = f"""
         tell application "System Events"
@@ -527,7 +628,9 @@ class TimelineApp:
         except (FileNotFoundError, OSError, subprocess.TimeoutExpired):
             completed = None
         if attempts > 1 and (completed is None or completed.returncode != 0):
-            self.root.after(300, self.focus_timeline_preview_window, process_id, attempts - 1)
+            self.root.after(
+                300, self.focus_timeline_preview_window, process_id, attempts - 1
+            )
 
     def stop_timeline_preview(self, update_status: bool = True) -> None:
         if self.preview_player and self.preview_player.poll() is None:
@@ -538,24 +641,33 @@ class TimelineApp:
 
     def cleanup_cache(self, include_exports: bool = False) -> None:
         if include_exports and not self.timeline_path:
-            messagebox.showerror("削除できません", "出力XMLを削除するには、先に一時保存してください。")
+            messagebox.showerror(
+                "削除できません", "出力XMLを削除するには、先に一時保存してください。"
+            )
             return
 
         target_label = ".setlog のキャッシュ"
         if include_exports:
             target_label += " と timeline.fcpxml"
-        if not messagebox.askyesno("削除確認", f"{target_label} を削除します。よろしいですか？"):
+        if not messagebox.askyesno(
+            "削除確認", f"{target_label} を削除します。よろしいですか？"
+        ):
             return
 
         self.stop_timeline_preview(update_status=False)
         try:
-            removed = cleanup_intermediate_files(self.get_cache_base_path(), include_exports=include_exports)
+            removed = cleanup_intermediate_files(
+                self.get_cache_base_path(), include_exports=include_exports
+            )
         except OSError as exc:
             messagebox.showerror("削除失敗", str(exc))
             return
 
         self.preview_image = None
-        self.preview_label.configure(text="キャッシュを削除しました。クリップを選択すると再生成します。", image="")
+        self.preview_label.configure(
+            text="キャッシュを削除しました。クリップを選択すると再生成します。",
+            image="",
+        )
         count = len(removed)
         if count:
             self.editor_status.set(f"{count}件の途中生成物を削除しました。")
@@ -565,7 +677,11 @@ class TimelineApp:
     def get_cache_base_path(self) -> Path:
         if self.timeline_path:
             return self.timeline_path
-        return Path(tempfile.gettempdir()) / "setlog-davinci-resolve-integration" / "timeline.yaml"
+        return (
+            Path(tempfile.gettempdir())
+            / "setlog-davinci-resolve-integration"
+            / "timeline.yaml"
+        )
 
     def close(self) -> None:
         self.stop_timeline_preview(update_status=False)
@@ -577,10 +693,17 @@ class TimelineApp:
         preview_dir.mkdir(parents=True, exist_ok=True)
         concat_path = preview_dir / "timeline_preview.ffconcat"
         lines = ["ffconcat version 1.0"]
+        if not self.timeline:
+            raise TimelineError("編集するタイムラインがありません。")
         for clip in clips:
-            lines.append(f"file {self.quote_ffconcat_path(clip.path)}")
-            lines.append(f"inpoint {float(clip.trim_in):.6f}")
-            lines.append(f"outpoint {float(clip.trim_out):.6f}")
+            preview_path = generate_timeline_preview_clip(
+                clip,
+                preview_base,
+                self.timeline.sequence_width,
+                self.timeline.sequence_height,
+                self.timeline.sequence_frame_rate,
+            )
+            lines.append(f"file {self.quote_ffconcat_path(preview_path)}")
         concat_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
         return concat_path
 
@@ -599,9 +722,16 @@ class TimelineApp:
                 messagebox.showerror("入力エラー", "選択クリップが見つかりません。")
             return False
         try:
-            timeline = trim_clip(self.timeline, clip.id, self.clip_trim_in.get(), self.clip_trim_out.get())
+            timeline = trim_clip(
+                self.timeline,
+                clip.id,
+                self.clip_trim_in.get(),
+                self.clip_trim_out.get(),
+            )
             timeline = set_enabled(timeline, clip.id, self.clip_enabled.get())
-            timeline = set_note(timeline, clip.id, self.note_text.get("1.0", "end").strip())
+            timeline = set_note(
+                timeline, clip.id, self.note_text.get("1.0", "end").strip()
+            )
             self.timeline = timeline
             self.populate_clip_tree(select_id=clip.id)
             return True
@@ -615,7 +745,10 @@ class TimelineApp:
     def find_selected_clip(self) -> EditableClip | None:
         if not self.timeline or not self.selected_clip_id:
             return None
-        return next((item for item in self.timeline.clips if item.id == self.selected_clip_id), None)
+        return next(
+            (item for item in self.timeline.clips if item.id == self.selected_clip_id),
+            None,
+        )
 
     def move_selected_up(self) -> None:
         self.move_selected_clip(-1)
@@ -642,9 +775,13 @@ class TimelineApp:
         target_id = ids[target_index]
         try:
             if direction < 0:
-                self.timeline = move_clip(self.timeline, clip_id, before=target_id, after=None)
+                self.timeline = move_clip(
+                    self.timeline, clip_id, before=target_id, after=None
+                )
             else:
-                self.timeline = move_clip(self.timeline, clip_id, before=None, after=target_id)
+                self.timeline = move_clip(
+                    self.timeline, clip_id, before=None, after=target_id
+                )
             self.populate_clip_tree(select_id=clip_id)
             if self.timeline_path:
                 self.save_project()
@@ -658,7 +795,9 @@ class TimelineApp:
         return "break"
 
     def save_project(self) -> None:
-        self._save_project(show_dialogs=True, choose_directory=self.output_folder is None)
+        self._save_project(
+            show_dialogs=True, choose_directory=self.output_folder is None
+        )
 
     def _save_project(self, show_dialogs: bool, choose_directory: bool = False) -> bool:
         if not self.timeline:
@@ -667,7 +806,9 @@ class TimelineApp:
             return False
         if self.is_saving:
             return False
-        if self.selected_clip_id and not self.apply_selected_edit(show_dialogs=show_dialogs):
+        if self.selected_clip_id and not self.apply_selected_edit(
+            show_dialogs=show_dialogs
+        ):
             return False
 
         output_folder = self.output_folder
@@ -700,21 +841,27 @@ class TimelineApp:
 
         self.output_folder = output_folder
         self.timeline_path = timeline_path
-        self.editor_status.set(f"{timeline_path} / {fcpxml_path} を保存しました。自動保存はONです。")
+        self.editor_status.set(
+            f"{timeline_path} / {fcpxml_path} を保存しました。自動保存はONです。"
+        )
         self.enable_autosave()
         return True
 
     def enable_autosave(self) -> None:
         self.autosave_enabled = True
         if self.autosave_after_id is None:
-            self.autosave_after_id = self.root.after(AUTOSAVE_INTERVAL_MS, self.run_autosave)
+            self.autosave_after_id = self.root.after(
+                AUTOSAVE_INTERVAL_MS, self.run_autosave
+            )
 
     def run_autosave(self) -> None:
         self.autosave_after_id = None
         if self.autosave_enabled and self.timeline_path and self.output_folder:
             self._save_project(show_dialogs=False, choose_directory=False)
         if self.autosave_enabled:
-            self.autosave_after_id = self.root.after(AUTOSAVE_INTERVAL_MS, self.run_autosave)
+            self.autosave_after_id = self.root.after(
+                AUTOSAVE_INTERVAL_MS, self.run_autosave
+            )
 
 
 def main() -> None:

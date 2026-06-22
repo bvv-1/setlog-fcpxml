@@ -15,6 +15,7 @@ from timeline_edit import (
     ensure_normalized_media,
     export_timeline,
     format_edit_time,
+    generate_timeline_preview_clip,
     load_timeline,
     move_clip,
     parse_timecode,
@@ -37,8 +38,30 @@ def make_timeline(tmp: Path) -> EditableTimeline:
         sequence_height=1080,
         sequence_frame_rate=Fraction(30, 1),
         clips=[
-            EditableClip("c001", first, Fraction(10, 1), Fraction(0, 1), Fraction(10, 1), 1920, 1080, Fraction(30, 1), True, "1"),
-            EditableClip("c002", second, Fraction(8, 1), Fraction(0, 1), Fraction(8, 1), 1920, 1080, Fraction(30, 1), True, "2"),
+            EditableClip(
+                "c001",
+                first,
+                Fraction(10, 1),
+                Fraction(0, 1),
+                Fraction(10, 1),
+                1920,
+                1080,
+                Fraction(30, 1),
+                True,
+                "1",
+            ),
+            EditableClip(
+                "c002",
+                second,
+                Fraction(8, 1),
+                Fraction(0, 1),
+                Fraction(8, 1),
+                1920,
+                1080,
+                Fraction(30, 1),
+                True,
+                "2",
+            ),
         ],
     )
 
@@ -62,7 +85,9 @@ class TimelineEditTests(unittest.TestCase):
             path = Path(tmpdir) / "timeline.yaml"
             save_timeline(make_timeline(Path(tmpdir)), path)
             data = path.read_text(encoding="utf-8")
-            data = data.replace('      "original_path": "' + str(Path(tmpdir) / "1.mp4") + '",\n', "")
+            data = data.replace(
+                '      "original_path": "' + str(Path(tmpdir) / "1.mp4") + '",\n', ""
+            )
             data = data.replace('      "rotation": 0,\n', "")
             data = data.replace('      "normalized_path": null,\n', "")
             path.write_text(data, encoding="utf-8")
@@ -93,7 +118,9 @@ class TimelineEditTests(unittest.TestCase):
             self.assertEqual(validate_timeline(timeline), [])
             export_timeline(timeline, output)
             root = ET.fromstring(output.read_text(encoding="utf-8"))
-            asset_clips = root.findall("./library/event/project/sequence/spine/asset-clip")
+            asset_clips = root.findall(
+                "./library/event/project/sequence/spine/asset-clip"
+            )
 
             self.assertEqual([clip.id for clip in timeline.clips], ["c002", "c001"])
             self.assertEqual(len(asset_clips), 1)
@@ -129,7 +156,9 @@ class TimelineEditTests(unittest.TestCase):
                 ],
             )
 
-            def fake_run(command: list[str], **_kwargs: object) -> CompletedProcess[str]:
+            def fake_run(
+                command: list[str], **_kwargs: object
+            ) -> CompletedProcess[str]:
                 Path(command[-1]).write_text("normalized", encoding="utf-8")
                 return CompletedProcess(command, 0, "", "")
 
@@ -182,6 +211,56 @@ class TimelineEditTests(unittest.TestCase):
 
             self.assertIsNotNone(media_rep)
             self.assertEqual(media_rep.attrib["src"], normalized.as_uri())
+
+    def test_timeline_preview_clip_uses_existing_normalized_media(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            base = Path(tmpdir)
+            source = base / "1.mp4"
+            normalized = base / ".setlog" / "normalized" / "c004.mp4"
+            source.write_text("source", encoding="utf-8")
+            normalized.parent.mkdir(parents=True)
+            normalized.write_text("normalized", encoding="utf-8")
+            clip = EditableClip(
+                "c004",
+                normalized,
+                Fraction(10, 1),
+                Fraction(1, 1),
+                Fraction(4, 1),
+                1080,
+                1920,
+                Fraction(30, 1),
+                False,
+                "1",
+                original_path=source,
+                rotation=90,
+                normalized_path=normalized,
+            )
+
+            def fake_run(
+                command: list[str], **_kwargs: object
+            ) -> CompletedProcess[str]:
+                Path(command[-1]).write_text("preview", encoding="utf-8")
+                return CompletedProcess(command, 0, "", "")
+
+            with patch("timeline_edit.subprocess.run", side_effect=fake_run) as run:
+                preview = generate_timeline_preview_clip(
+                    clip,
+                    base / "timeline.yaml",
+                    1920,
+                    1080,
+                    Fraction(30, 1),
+                )
+
+            command = run.call_args.args[0]
+            self.assertEqual(
+                preview, base / ".setlog" / "previews" / "c004.preview.mp4"
+            )
+            self.assertEqual(command[command.index("-i") + 1], str(normalized))
+            self.assertEqual(command[command.index("-ss") + 1], "1.000000")
+            self.assertEqual(command[command.index("-t") + 1], "3.000000")
+            self.assertTrue(
+                (base / ".setlog" / "previews" / "c004.preview.json").exists()
+            )
 
     def test_invalid_trim_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:

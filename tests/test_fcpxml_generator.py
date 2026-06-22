@@ -61,8 +61,24 @@ class FcpxmlGeneratorTests(unittest.TestCase):
 
     def test_build_fcpxml_outputs_parseable_timeline(self) -> None:
         clips = [
-            MediaClip(Path("/tmp/素材 1.mp4"), Fraction(3, 1), 1920, 1080, Fraction(30, 1), True, 2, 48000),
-            MediaClip(Path("/tmp/clip10.mp4"), Fraction(5, 2), 1920, 1080, Fraction(30, 1), False),
+            MediaClip(
+                Path("/tmp/素材 1.mp4"),
+                Fraction(3, 1),
+                1920,
+                1080,
+                Fraction(30, 1),
+                True,
+                2,
+                48000,
+            ),
+            MediaClip(
+                Path("/tmp/clip10.mp4"),
+                Fraction(5, 2),
+                1920,
+                1080,
+                Fraction(30, 1),
+                False,
+            ),
         ]
 
         xml_text = build_fcpxml(clips, project_name="timeline")
@@ -73,10 +89,14 @@ class FcpxmlGeneratorTests(unittest.TestCase):
         self.assertEqual(root.attrib["version"], "1.10")
         self.assertEqual(len(assets), 2)
         self.assertEqual(len(asset_clips), 2)
-        self.assertIn("%E7%B4%A0%E6%9D%90%201.mp4", assets[0].find("media-rep").attrib["src"])
+        self.assertIn(
+            "%E7%B4%A0%E6%9D%90%201.mp4", assets[0].find("media-rep").attrib["src"]
+        )
         self.assertEqual(asset_clips[0].attrib["offset"], "0s")
         self.assertEqual(asset_clips[1].attrib["offset"], "3s")
-        self.assertEqual(root.find("./library/event/project/sequence").attrib["duration"], "11/2s")
+        self.assertEqual(
+            root.find("./library/event/project/sequence").attrib["duration"], "11/2s"
+        )
 
 
 if __name__ == "__main__":

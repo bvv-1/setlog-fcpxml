@@ -16,3 +16,16 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 only-include = ["cli.py", "fcpxml_generator.py", "main.py", "timeline_edit.py"]
+
+[tool.ruff]
+target-version = "py312"
+
+[tool.ty.environment]
+python-version = "3.12"
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.6.0",
+    "ruff>=0.15.18",
+    "ty>=0.0.51",
+]

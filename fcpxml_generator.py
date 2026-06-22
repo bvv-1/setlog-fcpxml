@@ -127,22 +127,26 @@ def probe_media(path: Path, ffprobe_path: str = "ffprobe") -> MediaClip:
             text=True,
         )
     except FileNotFoundError as exc:
-        raise MediaProbeError("ffprobe が見つかりません。Homebrew などで ffmpeg をインストールしてください。") from exc
+        raise MediaProbeError(
+            "ffprobe が見つかりません。Homebrew などで ffmpeg をインストールしてください。"
+        ) from exc
     except subprocess.CalledProcessError as exc:
         detail = exc.stderr.strip() or exc.stdout.strip() or str(exc)
         raise MediaProbeError(f"{path.name} の解析に失敗しました: {detail}") from exc
 
     data = json.loads(completed.stdout)
     streams = data.get("streams", [])
-    video_stream = next((stream for stream in streams if stream.get("codec_type") == "video"), None)
+    video_stream = next(
+        (stream for stream in streams if stream.get("codec_type") == "video"), None
+    )
     if not video_stream:
         raise MediaProbeError(f"{path.name} に動画ストリームが見つかりません。")
 
-    audio_streams = [stream for stream in streams if stream.get("codec_type") == "audio"]
+    audio_streams = [
+        stream for stream in streams if stream.get("codec_type") == "audio"
+    ]
     duration = (
-        video_stream.get("duration")
-        or data.get("format", {}).get("duration")
-        or "0"
+        video_stream.get("duration") or data.get("format", {}).get("duration") or "0"
     )
     duration_fraction = Fraction(str(duration)).limit_denominator(1_000_000)
     if duration_fraction <= 0:
@@ -167,7 +171,9 @@ def probe_media(path: Path, ffprobe_path: str = "ffprobe") -> MediaClip:
         duration=duration_fraction,
         width=width,
         height=height,
-        frame_rate=parse_rate(video_stream.get("avg_frame_rate") or video_stream.get("r_frame_rate")),
+        frame_rate=parse_rate(
+            video_stream.get("avg_frame_rate") or video_stream.get("r_frame_rate")
+        ),
         has_audio=bool(audio_streams),
         audio_channels=audio_channels,
         audio_rate=audio_rate,
@@ -203,7 +209,9 @@ def build_fcpxml(clips: Iterable[MediaClip], project_name: str = "timeline") -> 
     return build_fcpxml_timeline(export_clips, project_name=project_name)
 
 
-def build_fcpxml_timeline(clips: Iterable[TimelineClip], project_name: str = "timeline") -> str:
+def build_fcpxml_timeline(
+    clips: Iterable[TimelineClip], project_name: str = "timeline"
+) -> str:
     clip_list = list(clips)
     if not clip_list:
         raise ValueError("少なくとも1本のクリップが必要です。")
@@ -283,13 +291,19 @@ def build_fcpxml_timeline(clips: Iterable[TimelineClip], project_name: str = "ti
         offset += clip.timeline_duration
 
     rough_xml = ET.tostring(fcpxml, encoding="utf-8")
-    pretty_xml = minidom.parseString(rough_xml).toprettyxml(indent="  ", encoding="utf-8")
+    pretty_xml = minidom.parseString(rough_xml).toprettyxml(
+        indent="  ", encoding="utf-8"
+    )
     return pretty_xml.decode("utf-8")
 
 
-def write_fcpxml(clips: Iterable[MediaClip], output_path: Path, project_name: str = "timeline") -> Path:
+def write_fcpxml(
+    clips: Iterable[MediaClip], output_path: Path, project_name: str = "timeline"
+) -> Path:
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text(build_fcpxml(clips, project_name=project_name), encoding="utf-8")
+    output_path.write_text(
+        build_fcpxml(clips, project_name=project_name), encoding="utf-8"
+    )
     return output_path
 
 
@@ -299,5 +313,7 @@ def write_fcpxml_timeline(
     project_name: str = "timeline",
 ) -> Path:
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text(build_fcpxml_timeline(clips, project_name=project_name), encoding="utf-8")
+    output_path.write_text(
+        build_fcpxml_timeline(clips, project_name=project_name), encoding="utf-8"
+    )
     return output_path

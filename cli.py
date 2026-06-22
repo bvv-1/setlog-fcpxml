@@ -31,7 +31,9 @@ def build_parser() -> argparse.ArgumentParser:
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
 
-    scan = subparsers.add_parser("scan", help="素材フォルダを解析してtimeline.yamlを作成")
+    scan = subparsers.add_parser(
+        "scan", help="素材フォルダを解析してtimeline.yamlを作成"
+    )
     scan.add_argument("media_folder", type=Path)
     scan.add_argument("-o", "--output", type=Path, default=Path("timeline.yaml"))
     scan.add_argument("--project-name", default="timeline")
@@ -74,9 +76,13 @@ def build_parser() -> argparse.ArgumentParser:
     validate = subparsers.add_parser("validate", help="timeline.yamlの整合性を検証")
     validate.add_argument("timeline", type=Path)
 
-    clean = subparsers.add_parser("clean", help=".setlog配下のキャッシュなど途中生成物を削除")
+    clean = subparsers.add_parser(
+        "clean", help=".setlog配下のキャッシュなど途中生成物を削除"
+    )
     clean.add_argument("timeline", type=Path)
-    clean.add_argument("--include-exports", action="store_true", help="timeline.fcpxml も削除")
+    clean.add_argument(
+        "--include-exports", action="store_true", help="timeline.fcpxml も削除"
+    )
 
     subparsers.add_parser("gui", help="素材フォルダから編集GUIを起動")
     return parser
@@ -96,49 +102,65 @@ def main(argv: list[str] | None = None) -> int:
             print(make_show_table(load_timeline(args.timeline)))
             return 0
         if args.command == "trim":
-            timeline = ensure_normalized_media(load_timeline(args.timeline), args.timeline)
+            timeline = ensure_normalized_media(
+                load_timeline(args.timeline), args.timeline
+            )
             timeline = trim_clip(timeline, args.clip_id, args.trim_in, args.trim_out)
             save_timeline(timeline, args.timeline)
             print(f"{args.clip_id} のtrimを更新しました。")
             return 0
         if args.command == "enable":
-            timeline = ensure_normalized_media(load_timeline(args.timeline), args.timeline)
+            timeline = ensure_normalized_media(
+                load_timeline(args.timeline), args.timeline
+            )
             timeline = set_enabled(timeline, args.clip_id, True)
             save_timeline(timeline, args.timeline)
             print(f"{args.clip_id} をenabledにしました。")
             return 0
         if args.command == "disable":
-            timeline = ensure_normalized_media(load_timeline(args.timeline), args.timeline)
+            timeline = ensure_normalized_media(
+                load_timeline(args.timeline), args.timeline
+            )
             timeline = set_enabled(timeline, args.clip_id, False)
             save_timeline(timeline, args.timeline)
             print(f"{args.clip_id} をdisabledにしました。")
             return 0
         if args.command == "move":
-            timeline = ensure_normalized_media(load_timeline(args.timeline), args.timeline)
+            timeline = ensure_normalized_media(
+                load_timeline(args.timeline), args.timeline
+            )
             timeline = move_clip(timeline, args.clip_id, args.before, args.after)
             save_timeline(timeline, args.timeline)
             print(f"{args.clip_id} を移動しました。")
             return 0
         if args.command == "note":
-            timeline = ensure_normalized_media(load_timeline(args.timeline), args.timeline)
+            timeline = ensure_normalized_media(
+                load_timeline(args.timeline), args.timeline
+            )
             timeline = set_note(timeline, args.clip_id, args.text)
             save_timeline(timeline, args.timeline)
             print(f"{args.clip_id} のnoteを更新しました。")
             return 0
         if args.command == "thumbs":
-            timeline = ensure_normalized_media(load_timeline(args.timeline), args.timeline)
+            timeline = ensure_normalized_media(
+                load_timeline(args.timeline), args.timeline
+            )
             timeline = generate_thumbnails(timeline, args.timeline)
             save_timeline(timeline, args.timeline)
             print(".setlog/thumbs にサムネイルを生成しました。")
             return 0
         if args.command == "export":
-            timeline = ensure_normalized_media(load_timeline(args.timeline), args.timeline)
+            timeline = ensure_normalized_media(
+                load_timeline(args.timeline), args.timeline
+            )
             save_timeline(timeline, args.timeline)
             export_timeline(timeline, args.output)
             print(f"{args.output} を出力しました。")
             return 0
         if args.command == "validate":
-            timeline = ensure_normalized_media(load_timeline(args.timeline), args.timeline)
+            timeline = ensure_normalized_media(
+                load_timeline(args.timeline), args.timeline
+            )
             save_timeline(timeline, args.timeline)
             errors = validate_timeline(timeline)
             if errors:
@@ -148,7 +170,9 @@ def main(argv: list[str] | None = None) -> int:
             print("OK")
             return 0
         if args.command == "clean":
-            removed = cleanup_intermediate_files(args.timeline, include_exports=args.include_exports)
+            removed = cleanup_intermediate_files(
+                args.timeline, include_exports=args.include_exports
+            )
             if removed:
                 for path in removed:
                     print(f"削除しました: {path}")
