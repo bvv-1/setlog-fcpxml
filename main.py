@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import math
+import statistics
 import subprocess
 import sys
 import tempfile
@@ -36,6 +38,28 @@ from timeline_edit import (
 
 DEFAULT_MEDIA_FOLDER = Path("/Users/yamada_kentaro/Movies/20260228_0301_fukui")
 AUTOSAVE_INTERVAL_SECONDS = 30
+CLIP_DURATION_PLOT_WIDTH = 760
+CLIP_DURATION_PLOT_HEIGHT = 112
+
+
+def clip_duration_distribution(
+    clips: list[EditableClip], sigma_threshold: float
+) -> tuple[float, float, set[str]]:
+    """Return mean, population standard deviation, and duration outlier IDs."""
+    if not clips:
+        return 0.0, 0.0, set()
+    durations = [float(clip.timeline_duration) for clip in clips]
+    mean = statistics.fmean(durations)
+    standard_deviation = statistics.pstdev(durations)
+    if math.isclose(standard_deviation, 0.0):
+        return mean, standard_deviation, set()
+    limit = sigma_threshold * standard_deviation
+    outliers = {
+        clip.id
+        for clip, duration in zip(clips, durations, strict=True)
+        if abs(duration - mean) >= limit
+    }
+    return mean, standard_deviation, outliers
 
 
 def border_all(width: int, color: ft.ColorValue) -> ft.border.Border:
@@ -84,6 +108,8 @@ class TimelineApp:
         self.is_saving = False
         self.is_preview_loading = False
         self.pregenerate_cancel = False
+        self.duration_plot_visible = False
+        self.duration_sigma_threshold = 1.5
 
         self.media_folder_field = ft.TextField(
             label="素材フォルダ",
@@ -109,10 +135,51 @@ class TimelineApp:
         )
         self.timeline_summary_text = ft.Text("")
         self.timeline_visual = ft.Row(spacing=1, expand=True)
+        self.duration_plot_stack = ft.Stack(
+            width=CLIP_DURATION_PLOT_WIDTH,
+            height=CLIP_DURATION_PLOT_HEIGHT,
+        )
+        self.duration_plot_summary = ft.Text("")
+        self.duration_sigma_text = ft.Text("外れ値の境界: 1.5σ", width=150)
+        self.duration_sigma_slider = ft.Slider(
+            min=0.5,
+            max=3.0,
+            divisions=25,
+            value=self.duration_sigma_threshold,
+            label="{value}σ",
+            expand=True,
+            on_change=self.change_duration_sigma,
+        )
+        self.duration_plot_panel = ft.Container(
+            visible=self.duration_plot_visible,
+            padding=padding_symmetric(horizontal=12, vertical=8),
+            border=border_all(1, ft.Colors.OUTLINE_VARIANT),
+            border_radius=6,
+            content=ft.Column(
+                controls=[
+                    ft.Row(
+                        controls=[
+                            self.duration_plot_summary,
+                            self.duration_sigma_text,
+                            self.duration_sigma_slider,
+                        ],
+                        vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                    ),
+                    ft.Row(
+                        controls=[self.duration_plot_stack],
+                        alignment=ft.MainAxisAlignment.CENTER,
+                        scroll=ft.ScrollMode.AUTO,
+                    ),
+                ],
+                spacing=4,
+            ),
+        )
         self.clip_list = ft.ListView(expand=True, spacing=4, padding=0)
         self.clip_detail_text = ft.Text("", selectable=True)
         self.preview_box = ft.Container(
-            content=ft.Text("クリップを選択してください。", text_align=ft.TextAlign.CENTER),
+            content=ft.Text(
+                "クリップを選択してください。", text_align=ft.TextAlign.CENTER
+            ),
             alignment=ft.Alignment(0, 0),
             bgcolor=ft.Colors.BLACK12,
             border=border_all(1, ft.Colors.OUTLINE_VARIANT),
@@ -223,6 +290,11 @@ class TimelineApp:
                     tooltip="停止",
                     on_click=self.stop_timeline_preview,
                 ),
+                ft.IconButton(
+                    icon=ft.Icons.SCATTER_PLOT,
+                    tooltip="クリップ尺の分布を表示/非表示",
+                    on_click=self.toggle_duration_plot,
+                ),
                 self.editor_status_text,
                 ft.PopupMenuButton(
                     icon=ft.Icons.SETTINGS,
@@ -252,6 +324,7 @@ class TimelineApp:
                     bgcolor=ft.Colors.with_opacity(0.92, ft.Colors.BLACK),
                     border=border_all(1, ft.Colors.GREY_700),
                 ),
+                self.duration_plot_panel,
             ],
             spacing=4,
         )
@@ -725,6 +798,117 @@ class TimelineApp:
                 )
             )
 
+    def toggle_duration_plot(self, _event: ft.ControlEvent | None = None) -> None:
+        self.duration_plot_visible = not self.duration_plot_visible
+        self.duration_plot_panel.visible = self.duration_plot_visible
+        if self.duration_plot_visible:
+            self.draw_duration_plot()
+        self.page.update()
+
+    def change_duration_sigma(self) -> None:
+        try:
+            self.duration_sigma_threshold = float(
+                self.duration_sigma_slider.value or 1.5
+            )
+        except (TypeError, ValueError):
+            return
+        self.duration_sigma_text.value = (
+            f"外れ値の境界: {self.duration_sigma_threshold:.1f}σ"
+        )
+        self.draw_duration_plot()
+        self.page.update()
+
+    def draw_duration_plot(self) -> None:
+        self.duration_plot_stack.controls.clear()
+        if not self.timeline or not self.timeline.clips:
+            self.duration_plot_summary.value = "クリップ尺の分布: データなし"
+            return
+
+        clips = self.timeline.clips
+        mean, standard_deviation, outlier_ids = clip_duration_distribution(
+            clips, self.duration_sigma_threshold
+        )
+        durations = [float(clip.timeline_duration) for clip in clips]
+        maximum = max(durations)
+        scale_max = maximum if maximum > 0 else 1.0
+        plot_left = 36
+        plot_right = CLIP_DURATION_PLOT_WIDTH - 18
+        plot_width = plot_right - plot_left
+        baseline_y = CLIP_DURATION_PLOT_HEIGHT - 22
+
+        self.duration_plot_summary.value = (
+            f"クリップ尺の分布: 平均 {mean:.2f}秒 / σ {standard_deviation:.2f}秒 / "
+            f"外れ値 {len(outlier_ids)}件"
+        )
+        self.duration_plot_stack.controls.extend(
+            [
+                ft.Container(
+                    left=plot_left,
+                    top=baseline_y,
+                    width=plot_width,
+                    height=1,
+                    bgcolor=ft.Colors.OUTLINE,
+                ),
+                ft.Text("0秒", left=plot_left - 4, top=baseline_y + 2, size=10),
+                ft.Text(
+                    f"{scale_max:.1f}秒",
+                    right=0,
+                    top=baseline_y + 2,
+                    size=10,
+                ),
+            ]
+        )
+
+        if standard_deviation > 0:
+            for boundary in (
+                mean - self.duration_sigma_threshold * standard_deviation,
+                mean + self.duration_sigma_threshold * standard_deviation,
+            ):
+                if 0 <= boundary <= scale_max:
+                    x = plot_left + (boundary / scale_max) * plot_width
+                    self.duration_plot_stack.controls.append(
+                        ft.Container(
+                            left=x,
+                            top=6,
+                            width=2,
+                            height=baseline_y - 6,
+                            bgcolor=ft.Colors.ORANGE_400,
+                        )
+                    )
+
+        for index, (clip, duration) in enumerate(zip(clips, durations, strict=True)):
+            x = plot_left + (duration / scale_max) * plot_width - 7
+            jitter_slot = (sum(ord(character) for character in clip.id) + index * 7) % 7
+            y = 12 + jitter_slot * 9
+            selected = clip.id == self.selected_clip_id
+            is_outlier = clip.id in outlier_ids
+            self.duration_plot_stack.controls.append(
+                ft.Container(
+                    left=max(plot_left - 7, min(x, plot_right - 7)),
+                    top=y,
+                    width=14,
+                    height=14,
+                    border_radius=7,
+                    bgcolor=(ft.Colors.RED_500 if is_outlier else ft.Colors.BLUE_400),
+                    border=border_all(
+                        3 if selected else 1,
+                        ft.Colors.BLACK if selected else ft.Colors.WHITE,
+                    ),
+                    data=clip.id,
+                    tooltip=(
+                        f"{clip.id} {clip.name}\n{duration:.2f}秒"
+                        + ("（外れ値）" if is_outlier else "")
+                    ),
+                    on_click=lambda _e, clip_id=clip.id: self.select_clip_from_plot(
+                        clip_id
+                    ),
+                )
+            )
+
+    def select_clip_from_plot(self, clip_id: str) -> None:
+        self.select_clip(clip_id)
+        self.scroll_to_clip(clip_id)
+
     def select_clip(self, clip_id: str, load_preview: bool = True) -> None:
         if not self.timeline:
             return
@@ -743,6 +927,8 @@ class TimelineApp:
         )
         self.refresh_clip_selection_styles()
         self.draw_timeline_visual()
+        if self.duration_plot_visible:
+            self.draw_duration_plot()
         self.page.update()
         if load_preview:
             self._start_preview_loading()
@@ -1162,10 +1348,10 @@ class TimelineApp:
             self.scroll_to_clip(prev_id)
 
     def scroll_to_clip(self, clip_id: str) -> None:
-        try:
-            self.clip_list.scroll_to(key=clip_id, duration=100)
-        except Exception:
-            pass
+        self.page.run_task(self._scroll_to_clip, clip_id)
+
+    async def _scroll_to_clip(self, clip_id: str) -> None:
+        await self.clip_list.scroll_to(scroll_key=clip_id, duration=100)
 
     async def save_project(self, _event: ft.ControlEvent | None = None) -> bool:
         return await self._save_project(
